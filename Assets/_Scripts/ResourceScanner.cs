@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -10,9 +8,9 @@ public class ResourceScanner : MonoBehaviour
 
     public Resource[] GetScannedResources()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,_scanRadius,_resourceLayer);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _scanRadius, _resourceLayer);
 
-        var resources = colliders.Where(c => c.TryGetComponent<Resource>(out var resource) && resource.Avaliable == true)
+        var resources = colliders.Where(c => c.TryGetComponent(out Resource resource))
             .Select(c => c.GetComponent<Resource>())
             .ToArray();
 

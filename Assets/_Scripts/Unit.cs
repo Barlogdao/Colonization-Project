@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using RB.Extensions.Vector;
 
 public class Unit : MonoBehaviour
 {
@@ -20,21 +21,17 @@ public class Unit : MonoBehaviour
 
     private IEnumerator HarvestRoutine(Resource resource)
     {
-        Vector3 targetPosition = resource.transform.position;
-        targetPosition.y = transform.position.y;
+        Vector3 targetPosition = resource.transform.position.WithY(transform.position.y);
 
         yield return MoveToTarget(targetPosition);
 
         resource.Harvest(transform, _cargoPlace.position);
 
-        targetPosition = _commandCenter.transform.position;
-        targetPosition.y = transform.position.y;
+        targetPosition = _commandCenter.transform.position.WithY(transform.position.y);
 
         yield return MoveToTarget(targetPosition);
 
-        _commandCenter.CollectResource(resource.Amount);
-        _commandCenter.ReturnUnit(this);
-        resource.Unload();
+        UnloadCargo(resource);
     }
 
     private IEnumerator MoveToTarget(Vector3 targetPosition)
@@ -42,7 +39,15 @@ public class Unit : MonoBehaviour
         while (transform.position != targetPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
+
             yield return null;
         }
+    }
+
+    private void UnloadCargo(Resource resource)
+    {
+        _commandCenter.AddResource(resource);
+        _commandCenter.ReturnUnit(this);
+        resource.Unload();
     }
 }

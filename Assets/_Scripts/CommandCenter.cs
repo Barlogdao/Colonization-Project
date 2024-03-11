@@ -10,26 +10,31 @@ public class CommandCenter : MonoBehaviour
     private int _resourceAmount = 0;
 
     private Queue<Unit> _units;
-    private List<Resource> _avaliableResources;
+    
+    private ResourceMap _resourceMap;
 
-    private bool HasFreeUnit => _units.Count > 0;
-    private bool HasFreeResource => _avaliableResources.Count > 0;
-    private bool CanHarvestResource => HasFreeUnit && HasFreeResource;
+    private bool HasAvaliableUnit => _units.Count > 0;
+    private bool HasHarvestableResource => _resourceMap.HasResources;
+    private bool CanHarvestResource => HasAvaliableUnit && HasHarvestableResource;
 
     public void Initialize()
     {
         _units = new Queue<Unit>();
-        _avaliableResources = new List<Resource>();
+        _resourceMap = new ResourceMap();
     }
 
     private IEnumerator Start()
     {
         while (enabled)
         {
-            TryHarvestResource();
-            yield return new WaitForSeconds(_scanInterval);
             Scan();
+            yield return new WaitForSeconds(_scanInterval);
         }
+    }
+
+    private void Update()
+    {
+        TryHarvestResource();
     }
 
     public void BindUnit(Unit unit)
@@ -40,17 +45,17 @@ public class CommandCenter : MonoBehaviour
 
     public void Scan()
     {
-        var avaliableResources = _resourceScanner.GetScannedResources();
+        Resource[] foundResources = _resourceScanner.GetScannedResources();
 
-        foreach (var resource in avaliableResources)
+        foreach (var resource in foundResources)
         {
-            AddFreeResource(resource);
+            _resourceMap.Add(resource);
         }
     }
 
-    public void CollectResource(int amount)
+    public void AddResource(Resource resource)
     {
-        _resourceAmount += amount;
+        _resourceAmount += resource.Amount;
     }
 
     public void ReturnUnit(Unit unit)
@@ -64,21 +69,9 @@ public class CommandCenter : MonoBehaviour
             return;
 
         Unit unit = _units.Dequeue();
-        Resource targetResource = _avaliableResources[0];
+        Resource targetResource = _resourceMap.GetResource();
         targetResource.Reserve();
 
         unit.HarvestResource(targetResource);
-    }
-
-    private void AddFreeResource(Resource resource)
-    {
-        _avaliableResources.Add(resource);
-        resource.Reserved += OnResourceReserved;
-    }
-
-    private void OnResourceReserved(Resource resource)
-    {
-        resource.Reserved -= OnResourceReserved;
-        _avaliableResources.Remove(resource);
     }
 }
