@@ -25,5 +25,4 @@ public class Resource : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 }

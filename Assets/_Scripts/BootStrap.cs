@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class BootStrap : MonoBehaviour
 {
-    [SerializeField] private Base _base;
+    [SerializeField] private CommandCenter _base;
 
     [SerializeField] private List<Unit> _units;
 
 
     private void Awake()
     {
-        _base.Initialize(_units);
+        _base.Initialize();
+
+        foreach (var unit in _units)
+        {
+            _base.BindUnit(unit);
+        }
     }
 
     private void OnValidate()

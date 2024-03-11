@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Base : MonoBehaviour
+public class CommandCenter : MonoBehaviour
 {
     [SerializeField] private ResourceScanner _resourceScanner;
+    [SerializeField] private float _scanInterval; 
 
     private int _resourceAmount = 0;
 
@@ -13,17 +14,12 @@ public class Base : MonoBehaviour
 
     private bool HasFreeUnit => _units.Count > 0;
     private bool HasFreeResource => _avaliableResources.Count > 0;
+    private bool CanHarvestResource => HasFreeUnit && HasFreeResource;
 
-    public void Initialize(List<Unit> units)
+    public void Initialize()
     {
         _units = new Queue<Unit>();
         _avaliableResources = new List<Resource>();
-
-        foreach (var unit in units)
-        {
-            _units.Enqueue(unit);
-            unit.Initialize(this);
-        }
     }
 
     private IEnumerator Start()
@@ -31,9 +27,15 @@ public class Base : MonoBehaviour
         while (enabled)
         {
             TryHarvestResource();
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(_scanInterval);
             Scan();
         }
+    }
+
+    public void BindUnit(Unit unit)
+    {
+        _units.Enqueue (unit);
+        unit.BindToCommandCenter(this);
     }
 
     public void Scan()
@@ -58,7 +60,7 @@ public class Base : MonoBehaviour
 
     private void TryHarvestResource()
     {
-        if (HasFreeResource == false || HasFreeUnit == false)
+        if (CanHarvestResource == false)
             return;
 
         Unit unit = _units.Dequeue();
@@ -67,6 +69,7 @@ public class Base : MonoBehaviour
 
         unit.HarvestResource(targetResource);
     }
+
     private void AddFreeResource(Resource resource)
     {
         _avaliableResources.Add(resource);

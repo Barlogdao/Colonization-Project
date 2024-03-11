@@ -19,7 +19,6 @@ public class ResourceScanner : MonoBehaviour
         return resources;
     }
 
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
