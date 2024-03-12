@@ -10,7 +10,7 @@ public class ResourceScanner : MonoBehaviour
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, _scanRadius, _resourceLayer);
 
-        var resources = colliders.Where(c => c.TryGetComponent(out Resource resource))
+        Resource[] resources = colliders.Where(c => c.TryGetComponent(out Resource resource))
             .Select(c => c.GetComponent<Resource>())
             .ToArray();
 

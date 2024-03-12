@@ -5,7 +5,7 @@ using RB.Extensions.Vector;
 public class Unit : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private Transform _cargoPlace;
+    [SerializeField] private Transform _cargo;
 
     private CommandCenter _commandCenter;
 
@@ -25,7 +25,7 @@ public class Unit : MonoBehaviour
 
         yield return MoveToTarget(targetPosition);
 
-        resource.Harvest(transform, _cargoPlace.position);
+        resource.Harvest(transform, _cargo.position);
 
         targetPosition = _commandCenter.transform.position.WithY(transform.position.y);
 

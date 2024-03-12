@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Resource : MonoBehaviour
+public class Resource : PooledObject
 {
     public event Action<Resource> Reserved;
 
@@ -23,6 +23,11 @@ public class Resource : MonoBehaviour
 
     public void Unload()
     {
-        Destroy(gameObject);
+        ReturnToPool();
+    }
+
+    protected override void OnReturnToPool()
+    {
+        Avaliable = true;
     }
 }

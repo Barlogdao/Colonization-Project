@@ -10,7 +10,6 @@ public class CommandCenter : MonoBehaviour
     private int _resourceAmount = 0;
 
     private Queue<Unit> _units;
-    
     private ResourceMap _resourceMap;
 
     private bool HasAvaliableUnit => _units.Count > 0;
@@ -70,8 +69,8 @@ public class CommandCenter : MonoBehaviour
 
         Unit unit = _units.Dequeue();
         Resource targetResource = _resourceMap.GetResource();
-        targetResource.Reserve();
 
+        targetResource.Reserve();
         unit.HarvestResource(targetResource);
     }
 }

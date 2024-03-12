@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider))]
@@ -7,12 +6,15 @@ public class ResourceSpawner : MonoBehaviour
 {
     [SerializeField] private Resource _resourcePrefab;
     [SerializeField] private float _spawnInterval;
+    [SerializeField] private Transform _container;
 
+    private Pool<PooledObject> _resourcePool;
     private BoxCollider _boxCollider;
 
     private void Awake()
     {
         _boxCollider = GetComponent<BoxCollider>();
+        _resourcePool = new Pool<PooledObject>(_container, _resourcePrefab);
     }
 
     private IEnumerator Start()
@@ -23,7 +25,8 @@ public class ResourceSpawner : MonoBehaviour
         {
             yield return interval;
 
-            Instantiate(_resourcePrefab, GetPosition(), Quaternion.identity);
+            var resource = _resourcePool.Get();
+            resource.transform.position = GetPosition();
         }
     }
 

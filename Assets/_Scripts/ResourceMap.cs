@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ResourceMap
 {
@@ -23,7 +22,7 @@ public class ResourceMap
 
     public Resource GetResource()
     {
-        return _avaliableResources[Random.Range(0,_avaliableResources.Count)];
+        return _avaliableResources[0];
     }
 
     private void Remove(Resource resource)
@@ -34,6 +33,7 @@ public class ResourceMap
     private void OnResourceReserved(Resource resource)
     {
         resource.Reserved -= OnResourceReserved;
+
         Remove(resource);
     }
 }
