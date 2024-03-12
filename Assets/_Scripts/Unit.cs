@@ -36,6 +36,8 @@ public class Unit : MonoBehaviour
 
     private IEnumerator MoveToTarget(Vector3 targetPosition)
     {
+        transform.LookAt(targetPosition);
+
         while (transform.position != targetPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
