@@ -1,19 +1,20 @@
+using RB.Extensions.Vector;
 using System.Collections;
+using UnityEditor.Rendering;
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
 public class ResourceSpawner : MonoBehaviour
 {
     [SerializeField] private Resource _resourcePrefab;
-    [SerializeField] private float _spawnInterval;
     [SerializeField] private Transform _container;
+    [SerializeField] private float _spawnInterval;
+    [SerializeField, Min(1f)] private float _spawnZoneRadius;
+    [SerializeField, Min(1)] private int _maxResourceAmount;
 
     private Pool<PooledObject> _resourcePool;
-    private BoxCollider _boxCollider;
 
     private void Awake()
     {
-        _boxCollider = GetComponent<BoxCollider>();
         _resourcePool = new Pool<PooledObject>(_container, _resourcePrefab);
     }
 
@@ -25,21 +26,30 @@ public class ResourceSpawner : MonoBehaviour
         {
             yield return interval;
 
-            var resource = _resourcePool.Get();
-            resource.transform.position = GetPosition();
+            Spawn();
         }
+    }
+
+    private void Spawn()
+    {
+        if (_resourcePool.TakenObjectsCount >= _maxResourceAmount)
+            return;
+
+        PooledObject resource = _resourcePool.Get();
+        resource.transform.position = GetPosition();
     }
 
     private Vector3 GetPosition()
     {
-        Vector3 minimalPosition = _boxCollider.bounds.min;
-        Vector3 maximalPosition = _boxCollider.bounds.max;
+        Vector3 position = transform.position + (Random.insideUnitSphere * _spawnZoneRadius);
+        position.y = transform.position.y;
 
-        return GetRandomVector3(minimalPosition, maximalPosition);
+        return position;
     }
 
-    private Vector3 GetRandomVector3(Vector3 min, Vector3 max)
+    private void OnDrawGizmosSelected()
     {
-        return new Vector3(Random.Range(min.x, max.x), Random.Range(min.y, max.y), Random.Range(min.z, max.z));
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, _spawnZoneRadius);
     }
 }

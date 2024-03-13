@@ -13,7 +13,7 @@ public class ResourceMap
 
     public void Add(Resource resource)
     {
-        if (resource.Avaliable == false || _avaliableResources.Contains(resource))
+        if (resource.IsAvaliable == false || _avaliableResources.Contains(resource))
             return;
 
         _avaliableResources.Add(resource);

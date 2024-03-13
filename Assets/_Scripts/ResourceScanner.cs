@@ -14,6 +14,14 @@ public class ResourceScanner : MonoBehaviour
             .Select(c => c.GetComponent<Resource>())
             .ToArray();
 
+        foreach (Resource resource in resources)
+        {
+            if (resource.IsRevealed == false)
+            {
+                resource.Reveal();
+            }
+        }
+
         return resources;
     }
 
