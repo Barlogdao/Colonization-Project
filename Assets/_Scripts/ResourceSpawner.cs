@@ -1,6 +1,4 @@
-using RB.Extensions.Vector;
 using System.Collections;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 public class ResourceSpawner : MonoBehaviour
@@ -20,11 +18,11 @@ public class ResourceSpawner : MonoBehaviour
 
     private IEnumerator Start()
     {
-        WaitForSeconds interval = new(_spawnInterval);
+        WaitForSeconds spawnInterval = new WaitForSeconds(_spawnInterval);
 
-        while (true)
+        while (enabled)
         {
-            yield return interval;
+            yield return spawnInterval;
 
             Spawn();
         }

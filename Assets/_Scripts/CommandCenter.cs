@@ -12,9 +12,9 @@ public class CommandCenter : MonoBehaviour
     private Queue<Unit> _units;
     private ResourceMap _resourceMap;
 
-    private bool HasAvaliableUnit => _units.Count > 0;
+    private bool HasAvailableUnit => _units.Count > 0;
     private bool HasHarvestableResource => _resourceMap.HasResources;
-    private bool CanHarvestResource => HasAvaliableUnit && HasHarvestableResource;
+    private bool CanHarvestResource => HasAvailableUnit && HasHarvestableResource;
 
     public void Initialize()
     {
@@ -39,7 +39,6 @@ public class CommandCenter : MonoBehaviour
     public void BindUnit(Unit unit)
     {
         _units.Enqueue (unit);
-        unit.BindToCommandCenter(this);
     }
 
     public void Scan()
@@ -52,14 +51,10 @@ public class CommandCenter : MonoBehaviour
         }
     }
 
-    public void AddResource(Resource resource)
+    public void AcceptResource(Resource resource)
     {
         _resourceAmount += resource.Amount;
-    }
-
-    public void ReturnUnit(Unit unit)
-    {
-        _units.Enqueue(unit);
+        resource.Remove();
     }
 
     private void TryHarvestResource()
@@ -71,6 +66,6 @@ public class CommandCenter : MonoBehaviour
         Resource targetResource = _resourceMap.GetResource();
 
         targetResource.Reserve();
-        unit.HarvestResource(targetResource);
+        unit.HarvestResource(this, targetResource);
     }
 }

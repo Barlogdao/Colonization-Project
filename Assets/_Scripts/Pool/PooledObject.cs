@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class PooledObject : MonoBehaviour, IPoolable<PooledObject>
+public abstract class PooledObject : MonoBehaviour, IPoolObject<PooledObject>
 {
     private IPool<PooledObject> _pool;
 
@@ -12,7 +12,7 @@ public abstract class PooledObject : MonoBehaviour, IPoolable<PooledObject>
     protected void ReturnToPool()
     {
         OnReturnToPool();
-        _pool.Release(this);
+        _pool.Return(this);
     }
 
     public abstract void OnGetFromPool();

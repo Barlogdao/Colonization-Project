@@ -9,7 +9,7 @@ public class Resource : PooledObject
 
     [field: SerializeField, Min(1)] public int Amount { get; private set; }
 
-    public bool IsAvaliable { get; private set; } = true;
+    public bool IsAvailable { get; private set; } = true;
     public bool IsRevealed { get; private set; } = false;
 
     public void Reveal()
@@ -21,7 +21,7 @@ public class Resource : PooledObject
     public void Reserve()
     {
         _view.OnReserve();
-        IsAvaliable = false;
+        IsAvailable = false;
         Reserved?.Invoke(this);
     }
 
@@ -32,7 +32,7 @@ public class Resource : PooledObject
         transform.position = placePosition;
     }
 
-    public void Unload()
+    public void Remove()
     {
         ReturnToPool();
     }
@@ -40,12 +40,12 @@ public class Resource : PooledObject
     public override void OnGetFromPool()
     {
         _view.OnAppear();
-        IsAvaliable = true;
+        IsAvailable = true;
         IsRevealed = false;
     }
 
     protected override void OnReturnToPool()
     {
-        IsAvaliable = false;
+        IsAvailable = false;
     }
 }

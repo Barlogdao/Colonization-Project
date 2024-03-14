@@ -1,5 +1,5 @@
 public interface IPool<T>
 {
     T Get();
-    void Release(T t);
+    void Return(T t);
 }

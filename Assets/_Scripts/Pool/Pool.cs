@@ -2,10 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Pool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
+public class Pool<T> : IPool<T> where T : MonoBehaviour, IPoolObject<T>
 {
     private const bool Taken = false;
-    private const bool Avaliable = true;
+    private const bool Available = true;
 
     private readonly Dictionary<T, bool> _pool;
     private readonly Transform _container;
@@ -21,19 +21,19 @@ public class Pool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
 
     public int TakenObjectsCount => _pool.Count(o => o.Value == Taken);
 
-    private bool HasAvaliableObject => _pool.Any(o => o.Value == Avaliable);
+    private bool HasAvailableObject => _pool.Any(o => o.Value == Available);
 
     public T Get()
     {
-        T pooledObject = GetFromPull();
+        T poolObject = GetFromPull();
 
-        pooledObject.gameObject.SetActive(true);
-        pooledObject.OnGetFromPool();
+        poolObject.gameObject.SetActive(true);
+        poolObject.OnGetFromPool();
 
-        return pooledObject;
+        return poolObject;
     }
 
-    public void Release(T poolObject)
+    public void Return(T poolObject)
     {
         poolObject.transform.parent = _container;
         poolObject.gameObject.SetActive(false);
@@ -43,31 +43,31 @@ public class Pool<T> : IPool<T> where T : MonoBehaviour, IPoolable<T>
 
     private T GetFromPull()
     {
-        if (HasAvaliableObject == false)
+        if (HasAvailableObject == false)
         {
             CreateObject();
         }
 
-        T obj = _pool.First(o => o.Value == Avaliable).Key;
-        MarkAsTaken(obj);
+        T poolObject = _pool.First(o => o.Value == Available).Key;
+        MarkAsTaken(poolObject);
 
-        return obj;
+        return poolObject;
     }
 
-    private void ReturnToPull(T obj)
+    private void ReturnToPull(T poolObject)
     {
-        MarkAsAvaliable(obj);
+        MarkAsAvailable(poolObject);
     }
 
     private void CreateObject()
     {
-        T objectInstance = GameObject.Instantiate(_prefab, _container);
+        T objectInstance = Object.Instantiate(_prefab, _container);
 
         objectInstance.BindToPool(this);
 
-        _pool.Add(objectInstance, Avaliable);
+        _pool.Add(objectInstance, Available);
     }
 
-    private void MarkAsAvaliable(T obj) => _pool[obj] = Avaliable;
-    private void MarkAsTaken(T obj) => _pool[obj] = Taken;
+    private void MarkAsAvailable(T poolObject) => _pool[poolObject] = Available;
+    private void MarkAsTaken(T poolObject) => _pool[poolObject] = Taken;
 }

@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51667e7d26a3064799828b06746eefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scanRadius: 42.6
+  _scanRadius: 102.5
   _resourceLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -189,7 +189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _resourceScanner: {fileID: 3828167386712747995}
-  _scanInterval: 2
+  _scanInterval: 4
 --- !u!23 &3708054779746956857
 MeshRenderer:
   m_ObjectHideFlags: 0

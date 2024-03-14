@@ -7,19 +7,12 @@ public class Unit : MonoBehaviour
     [SerializeField] private float _speed;
     [SerializeField] private Transform _cargo;
 
-    private CommandCenter _commandCenter;
-
-    public void BindToCommandCenter(CommandCenter commandCenter)
+    public void HarvestResource(CommandCenter commandCenter, Resource resource)
     {
-        _commandCenter = commandCenter;
+        StartCoroutine(HarvestRoutine(commandCenter, resource));
     }
 
-    public void HarvestResource(Resource resource)
-    {
-        StartCoroutine(HarvestRoutine(resource));
-    }
-
-    private IEnumerator HarvestRoutine(Resource resource)
+    private IEnumerator HarvestRoutine(CommandCenter commandCenter, Resource resource)
     {
         Vector3 targetPosition = resource.transform.position.WithY(transform.position.y);
 
@@ -27,11 +20,11 @@ public class Unit : MonoBehaviour
 
         resource.Harvest(transform, _cargo.position);
 
-        targetPosition = _commandCenter.transform.position.WithY(transform.position.y);
+        targetPosition = commandCenter.transform.position.WithY(transform.position.y);
 
         yield return MoveToTarget(targetPosition);
 
-        UnloadCargo(resource);
+        UnloadCargo(commandCenter,resource);
     }
 
     private IEnumerator MoveToTarget(Vector3 targetPosition)
@@ -46,10 +39,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void UnloadCargo(Resource resource)
+    private void UnloadCargo(CommandCenter commandCenter, Resource resource)
     {
-        _commandCenter.AddResource(resource);
-        _commandCenter.ReturnUnit(this);
-        resource.Unload();
+        commandCenter.AcceptResource(resource);
+        commandCenter.BindUnit(this);
     }
 }
