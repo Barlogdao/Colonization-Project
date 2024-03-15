@@ -4,6 +4,7 @@ using UnityEngine;
 public class ResourceView : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _glowParticles;
+    [SerializeField] private ParticleSystem _reserveMarkParticles;
 
     private MeshRenderer _meshRenderer;
 
@@ -16,6 +17,7 @@ public class ResourceView : MonoBehaviour
     {
         _meshRenderer.enabled = false;
         _glowParticles.Play();
+        _reserveMarkParticles.Stop();
     }
 
     public void OnReveal()
@@ -25,11 +27,12 @@ public class ResourceView : MonoBehaviour
 
     public void OnReserve()
     {
-
+        _reserveMarkParticles.Play();
     }
 
     public void OnHarvest()
     {
         _glowParticles.Stop();
+        _reserveMarkParticles.Stop();
     }
 }

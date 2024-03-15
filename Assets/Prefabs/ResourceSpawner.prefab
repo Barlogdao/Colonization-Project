@@ -48,9 +48,9 @@ MonoBehaviour:
   _resourcePrefab: {fileID: 7635014908049115032, guid: 1d76fd617c38c1b43ac134dcc10613fe,
     type: 3}
   _container: {fileID: 5703004120859972176}
-  _spawnInterval: 5
-  _spawnZoneRadius: 22.7
-  _maxResourceAmount: 5
+  _spawnInterval: 3
+  _spawnZoneRadius: 22
+  _maxResourceAmount: 4
 --- !u!1 &7935135678011297718
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ public class ResourceSpawner : MonoBehaviour
     [SerializeField, Min(1f)] private float _spawnZoneRadius;
     [SerializeField, Min(1)] private int _maxResourceAmount;
 
-    private Pool<PooledObject> _resourcePool;
+    private Pool<PoolObject> _resourcePool;
 
     private void Awake()
     {
-        _resourcePool = new Pool<PooledObject>(_container, _resourcePrefab);
+        _resourcePool = new Pool<PoolObject>(_container, _resourcePrefab);
     }
 
     private IEnumerator Start()
@@ -33,7 +33,7 @@ public class ResourceSpawner : MonoBehaviour
         if (_resourcePool.TakenObjectsCount >= _maxResourceAmount)
             return;
 
-        PooledObject resource = _resourcePool.Get();
+        PoolObject resource = _resourcePool.Get();
         resource.transform.position = GetPosition();
     }
 

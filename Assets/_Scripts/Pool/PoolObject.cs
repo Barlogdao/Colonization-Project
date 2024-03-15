@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public abstract class PooledObject : MonoBehaviour, IPoolObject<PooledObject>
+public abstract class PoolObject : MonoBehaviour, IPoolObject<PoolObject>
 {
-    private IPool<PooledObject> _pool;
+    private IPool<PoolObject> _pool;
 
-    public void BindToPool(IPool<PooledObject> pool)
+    public void BindToPool(IPool<PoolObject> pool)
     {
         _pool = pool;
     }

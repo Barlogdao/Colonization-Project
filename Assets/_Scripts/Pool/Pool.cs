@@ -64,7 +64,6 @@ public class Pool<T> : IPool<T> where T : MonoBehaviour, IPoolObject<T>
         T objectInstance = Object.Instantiate(_prefab, _container);
 
         objectInstance.BindToPool(this);
-
         _pool.Add(objectInstance, Available);
     }
 

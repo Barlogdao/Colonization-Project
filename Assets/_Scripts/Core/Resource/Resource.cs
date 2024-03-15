@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Resource : PooledObject
+public class Resource : PoolObject
 {
     [SerializeField] ResourceView _view;
 

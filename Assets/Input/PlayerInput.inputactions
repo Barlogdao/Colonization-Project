@@ -6,7 +6,7 @@
             "id": "ffb25181-b505-4642-b87c-e76aabf1c860",
             "actions": [
                 {
-                    "name": "New action",
+                    "name": "Scan",
                     "type": "Button",
                     "id": "9e0de719-31c6-4498-9cb2-5a30a5c40acf",
                     "expectedControlType": "Button",
@@ -19,16 +19,33 @@
                 {
                     "name": "",
                     "id": "f0adcd37-cfb3-464a-8e7e-432b7c314eae",
-                    "path": "",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "Scan",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
             ]
         }
     ],
-    "controlSchemes": []
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
 }
