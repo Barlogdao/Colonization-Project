@@ -76,13 +76,8 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
     {
         if (_scannerCooldown.IsReady == true)
         {
-            Scan();
+            _resourceScanner.Scan();
             _scannerCooldown.Reset();
         }
-    }
-
-    private void Scan()
-    {
-        _resourceScanner.Scan();
     }
 }
