@@ -27,6 +27,7 @@ public class ScannerVisual : MonoBehaviour
     }
 
     private void Show() => _renderer.enabled = true;
+
     private void Hide()
     {
         _renderer.enabled = false;

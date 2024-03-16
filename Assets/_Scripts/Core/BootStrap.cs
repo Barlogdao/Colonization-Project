@@ -11,7 +11,6 @@ public class BootStrap : MonoBehaviour
 
     private PlayerInput _playerInput;
 
-
     private void Awake()
     {
         _playerInput = new PlayerInput();

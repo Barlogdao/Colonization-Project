@@ -4,7 +4,9 @@ using UnityEngine;
 public class HUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _resourceAmount;
+
     private ICommandCenterNotifier _commandCenter;
+
     public void Initialize(ICommandCenterNotifier commandCenter)
     {
         _commandCenter = commandCenter;
