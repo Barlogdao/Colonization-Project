@@ -5,26 +5,27 @@ public class ResourceScanner : MonoBehaviour
 {
     [SerializeField] private float _scanRadius;
     [SerializeField] private float _scanCooldown;
+
     [SerializeField] private LayerMask _resourceLayer;
     [SerializeField] private ScannerVisual _visual;
 
-    private CooldownTimer _scannerTimer;
     private ResourceMap _resourceMap;
+    private float _elapsedTime;
 
     public void Initialize(ResourceMap resourceMap)
     {
         _resourceMap = resourceMap;
-        _scannerTimer = new CooldownTimer(_scanCooldown);
+        _elapsedTime = 0f;
     }
 
     private void Update()
     {
-        _scannerTimer.Update();
+        _elapsedTime += Time.deltaTime;
     }
 
     public void Scan()
     {
-        if (_scannerTimer.IsReady == false)
+        if (_elapsedTime < _scanCooldown)
             return;
 
         _visual.DoScan(_scanRadius);
@@ -36,8 +37,8 @@ public class ResourceScanner : MonoBehaviour
 
             _resourceMap.Add(resource);
         }
-
-        _scannerTimer.Reset();
+        
+        _elapsedTime = 0f;
     }
 
     private Resource[] GetScannedResources()

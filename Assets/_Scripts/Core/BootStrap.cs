@@ -8,10 +8,11 @@ public class BootStrap : MonoBehaviour
     [SerializeField] private CommandCenter _commandCenter;
     [SerializeField] private List<Unit> _units;
     [SerializeField] private HUD _hud;
+    [SerializeField] Selector _selector;
 
     private void Awake()
     {
-        _hud.Initialize(_commandCenter);
+        _hud.Initialize(_selector);
 
         foreach (var unit in _units)
         {

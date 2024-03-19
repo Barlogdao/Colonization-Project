@@ -34,7 +34,7 @@ public class Unit : MonoBehaviour
         UnloadCargo(commandCenter,resource);
     }
 
-    private IEnumerator BuildRoutine(Flag flag, CommandCenterSpawner commandCenterSpawner)
+    public IEnumerator BuildRoutine(Flag flag, CommandCenterSpawner commandCenterSpawner)
     {
         yield return MoveToTarget(flag.transform);
 

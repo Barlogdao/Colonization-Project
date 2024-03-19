@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
-public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
+public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
 {
     [SerializeField] private ResourceScanner _resourceScanner;
     [SerializeField, Min(1)] private int _unitCost = 3;
@@ -26,7 +26,6 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
     private bool _isBuildinginQueue = false;
     private Coroutine _buildRoutine;
     private Flag _placedFlag;
-
 
     public event Action<int> ResourceAmountChanged;
 
@@ -50,27 +49,10 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
         _resourceScanner.Initialize(_resourceMap);
     }
 
-    private void OnEnable()
-    {
-        _inputController.ScanPressed += OnScanPressed;
-        _inputController.BuildPressed += OnBuildPressed;
-    }
-
-    private void Start()
-    {
-        ResourceAmountChanged?.Invoke(_resourceAmount);
-    }
-
     private void Update()
     {
         TryCreateUnit();
         TryHarvestResource();
-    }
-
-    private void OnDisable()
-    {
-        _inputController.ScanPressed -= OnScanPressed;
-        _inputController.BuildPressed -= OnBuildPressed;
     }
 
     public void BindUnit(Unit unit)
@@ -135,14 +117,15 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
         yield return new WaitUntil(() => _resourceAmount >= _commandCenterCost && HasAvailableUnit);
 
         Unit unit = _bindedUnits.Dequeue();
-        unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);
+        //unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);
+
+        yield return unit.BuildRoutine(_placedFlag, _commandCenterSpawner);
+        SpendResources(_commandCenterCost);
         _isBuildinginQueue = false;
     }
 
     private void TryCreateUnit()
     {
-        return;
-
         if (_isBuildinginQueue)
             return;
 
@@ -158,6 +141,20 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
     {
         _resourceAmount -= amount;
         ResourceAmountChanged?.Invoke(_resourceAmount);
+    }
+
+    public void Select()
+    {
+        _inputController.ScanPressed += OnScanPressed;
+        _inputController.BuildPressed += OnBuildPressed;
+
+        ResourceAmountChanged?.Invoke(_resourceAmount);
+    }
+
+    public void Deselect()
+    {
+        _inputController.ScanPressed -= OnScanPressed;
+        _inputController.BuildPressed -= OnBuildPressed;
     }
 
     public class Factory : PlaceholderFactory<CommandCenter> { }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8625045334257582475}
   - component: {fileID: -2060885850014982798}
   - component: {fileID: 4931086755145420665}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: CommandCenterView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 787428130377594466}
   - component: {fileID: 6547657483362412667}
   - component: {fileID: 2138979450737610782}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: UpperGlass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: 3755788922920862310}
   - component: {fileID: 6611855797985870856}
   - component: {fileID: 5745093050395651443}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Dome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,7 +318,7 @@ GameObject:
   - component: {fileID: 8492633451980879618}
   - component: {fileID: 6392959270296211294}
   - component: {fileID: 6252298084045510547}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: MiddleGlass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -401,6 +401,10 @@ PrefabInstance:
     - target: {fileID: 1253900693933314, guid: 4cdb8278d09f82e4b9ba232954938442, type: 3}
       propertyPath: m_Name
       value: LandingSmoke
+      objectReference: {fileID: 0}
+    - target: {fileID: 1253900693933314, guid: 4cdb8278d09f82e4b9ba232954938442, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 4874128161110470, guid: 4cdb8278d09f82e4b9ba232954938442, type: 3}
       propertyPath: m_LocalScale.x
