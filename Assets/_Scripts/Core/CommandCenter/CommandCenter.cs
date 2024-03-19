@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
 public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
 {
     [SerializeField] private ResourceScanner _resourceScanner;
-    [SerializeField] private float _scanCooldown;
+    [SerializeField, Min(1)] private int _unitCost = 3;
+    [SerializeField, Min(1)] private int _commandCenterCost = 5;
+    [SerializeField] private BuildService _buildService;
 
     private int _resourceAmount = 0;
 
     private Queue<Unit> _units;
     private ResourceMap _resourceMap;
-    private PlayerInput _playerInput;
-    private CooldownTimer _scannerCooldown;
+    private UnitFactory _unitFactory;
+    private InputController _inputController;
 
     public event Action<int> ResourceAmountChanged;
 
@@ -21,15 +23,44 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
     private bool HasHarvestableResource => _resourceMap.HasResources;
     private bool CanHarvestResource => HasAvailableUnit && HasHarvestableResource;
 
-    public void Initialize(PlayerInput playerInput)
+    [Inject]
+    private void Construct(InputController inputController, UnitFactory unitFactory)
+    {
+        _inputController = inputController;
+        _unitFactory = unitFactory;
+
+        
+    }
+
+    private void Awake()
     {
         _units = new Queue<Unit>();
         _resourceMap = new ResourceMap();
-        _playerInput = playerInput;
-        _resourceScanner.Initialize(_resourceMap);
-        _scannerCooldown = new CooldownTimer(_scanCooldown);
+    }
 
-        _playerInput.Game.Scan.performed += OnScanPressed;
+    private void OnEnable()
+    {
+        _inputController.ScanPressed += OnScanPressed;
+        _inputController.BuildPressed += OnBuildPressed;
+    }
+
+    private void OnBuildPressed()
+    {
+        Debug.Log("Pressed");
+
+        if(_buildService.IsActive == false)
+        _buildService.StartBuild();
+    }
+
+    private void OnDisable()
+    {
+        _inputController.ScanPressed -= OnScanPressed;
+        _inputController.BuildPressed -= OnBuildPressed;
+    }
+
+    public void Initialize()
+    {
+        _resourceScanner.Initialize(_resourceMap);
     }
 
     private void Start()
@@ -39,13 +70,8 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
 
     private void Update()
     {
-        _scannerCooldown.Update();
+        TryCreateUnit();
         TryHarvestResource();
-    }
-
-    private void OnDestroy()
-    {
-        _playerInput.Game.Scan.performed -= OnScanPressed;
     }
 
     public void BindUnit(Unit unit)
@@ -72,12 +98,24 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier
         unit.HarvestResource(this, targetResource);
     }
 
-    private void OnScanPressed(InputAction.CallbackContext context)
+    private void OnScanPressed()
     {
-        if (_scannerCooldown.IsReady == true)
+        _resourceScanner.Scan();
+    }
+
+    private void TryCreateUnit()
+    {
+        if (_resourceAmount >= _unitCost)
         {
-            _resourceScanner.Scan();
-            _scannerCooldown.Reset();
+            Unit unit = _unitFactory.Create(transform.position);
+            BindUnit(unit);
+            SpendResources(_unitCost);
         }
+    }
+
+    private void SpendResources (int amount)
+    {
+        _resourceAmount -= amount;
+        ResourceAmountChanged?.Invoke(_resourceAmount);
     }
 }

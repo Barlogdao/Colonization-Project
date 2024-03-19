@@ -50,7 +50,7 @@ MonoBehaviour:
   _container: {fileID: 5703004120859972176}
   _spawnInterval: 3
   _spawnZoneRadius: 22
-  _maxResourceAmount: 4
+  _maxResourceAmount: 3
 --- !u!1 &7935135678011297718
 GameObject:
   m_ObjectHideFlags: 0

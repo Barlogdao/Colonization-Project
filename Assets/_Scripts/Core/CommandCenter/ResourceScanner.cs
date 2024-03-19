@@ -4,31 +4,40 @@ using UnityEngine;
 public class ResourceScanner : MonoBehaviour
 {
     [SerializeField] private float _scanRadius;
+    [SerializeField] private float _scanCooldown;
     [SerializeField] private LayerMask _resourceLayer;
-    [SerializeField] private ScannerVisual _visual; 
+    [SerializeField] private ScannerVisual _visual;
 
+    private CooldownTimer _scannerTimer;
     private ResourceMap _resourceMap;
 
     public void Initialize(ResourceMap resourceMap)
     {
         _resourceMap = resourceMap;
+        _scannerTimer = new CooldownTimer(_scanCooldown);
+    }
+
+    private void Update()
+    {
+        _scannerTimer.Update();
     }
 
     public void Scan()
     {
+        if (_scannerTimer.IsReady == false)
+            return;
+
         _visual.DoScan(_scanRadius);
 
-        var resources = GetScannedResources();
-
-        foreach (Resource resource in resources)
+        foreach (Resource resource in GetScannedResources())
         {
             if (resource.IsRevealed == false)
-            {
                 resource.Reveal();
-            }
 
             _resourceMap.Add(resource);
         }
+
+        _scannerTimer.Reset();
     }
 
     private Resource[] GetScannedResources()
@@ -42,7 +51,7 @@ public class ResourceScanner : MonoBehaviour
         return resources;
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
 

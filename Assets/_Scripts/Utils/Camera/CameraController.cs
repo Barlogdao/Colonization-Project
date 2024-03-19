@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] LayerMask _layerMask;
-    [SerializeField] private float _reachDuration;
+    [SerializeField] private LayerMask _layerMask;
 
     private void Update()
     {

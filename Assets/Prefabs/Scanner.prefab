@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b72c8e282f9e4154dbd33036c02d5ca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scanDuration: 0.4
+  _scanDuration: 0.6
   _ease: 21
 --- !u!1 &1665462511940167431
 GameObject:
@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scanRadius: 102.5
+  _scanCooldown: 5
   _resourceLayer:
     serializedVersion: 2
     m_Bits: 64
