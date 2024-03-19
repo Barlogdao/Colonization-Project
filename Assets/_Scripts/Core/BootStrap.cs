@@ -11,7 +11,6 @@ public class BootStrap : MonoBehaviour
 
     private void Awake()
     {
-        _commandCenter.Initialize();
         _hud.Initialize(_commandCenter);
 
         foreach (var unit in _units)

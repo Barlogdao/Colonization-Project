@@ -3,9 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class InputController : ITickable,IDisposable
+public class InputController : ITickable, IDisposable
 {
-    private PlayerInput _playerInput;
+    private readonly PlayerInput _playerInput;
 
     public event Action ScanPressed;
     public event Action BuildPressed;
@@ -21,12 +21,12 @@ public class InputController : ITickable,IDisposable
         _playerInput.Game.Build.performed += OnBuildPerformed;
     }
 
-    private void OnBuildPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnBuildPerformed(InputAction.CallbackContext context)
     {
         BuildPressed?.Invoke();
     }
 
-    private void OnScanPerformed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void OnScanPerformed(InputAction.CallbackContext context)
     {
         ScanPressed?.Invoke();
     }

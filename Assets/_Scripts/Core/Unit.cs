@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using RB.Extensions.Vector;
+using System;
+using TMPro;
 
 public class Unit : MonoBehaviour
 {
@@ -10,6 +12,11 @@ public class Unit : MonoBehaviour
     public void HarvestResource(CommandCenter commandCenter, Resource resource)
     {
         StartCoroutine(HarvestRoutine(commandCenter, resource));
+    }
+
+    public void BuildCommandCenter(Flag flag, CommandCenterSpawner commandCenterFactory)
+    {
+        StartCoroutine(BuildRoutine(flag, commandCenterFactory));
     }
 
     private IEnumerator HarvestRoutine(CommandCenter commandCenter, Resource resource)
@@ -27,6 +34,16 @@ public class Unit : MonoBehaviour
         UnloadCargo(commandCenter,resource);
     }
 
+    private IEnumerator BuildRoutine(Flag flag, CommandCenterSpawner commandCenterSpawner)
+    {
+        yield return MoveToTarget(flag.transform);
+
+        CommandCenter commandCenter = commandCenterSpawner.Spawn(flag.transform.position, flag.transform.rotation);
+        commandCenter.BindUnit(this);
+
+        Destroy(flag.gameObject);
+    }
+
     private IEnumerator MoveToTarget(Vector3 targetPosition)
     {
         transform.LookAt(targetPosition);
@@ -34,6 +51,17 @@ public class Unit : MonoBehaviour
         while (transform.position != targetPosition)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator MoveToTarget(Transform target)
+    {
+        while (transform.position != target.position.WithY(transform.position.y))
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position.WithY(transform.position.y), _speed * Time.deltaTime);
+            transform.LookAt(target.position.WithY(transform.position.y));
 
             yield return null;
         }
