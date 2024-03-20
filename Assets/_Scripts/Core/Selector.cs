@@ -2,25 +2,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using RB.Extensions.Component;
 using System;
+using Zenject;
 
 public class Selector : MonoBehaviour
 {
-    private Camera _camera;
+    private InputController _input;
     private ISelectable _selectable;
+
 
     public event Action<ISelectable> Selected;
     public event Action Deselected;
 
-    private Ray ScreenPointRay { get => _camera.ScreenPointToRay(Mouse.current.position.value); }
-
-    private void Awake()
+    [Inject]
+    public void Construct(InputController input)
     {
-        _camera = Camera.main;
+        _input = input;
     }
 
     private void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (_input.IsLeftMouseButtonClicked == true)
         {
             TrySelect();
         }
@@ -28,7 +29,7 @@ public class Selector : MonoBehaviour
 
     private void TrySelect()
     {
-        if (Physics.Raycast(ScreenPointRay, out RaycastHit hit) == false)
+        if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit) == false)
             return;
 
         if (hit.collider.TryGetComponentInParent(out ISelectable selectable) == false)

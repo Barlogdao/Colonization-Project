@@ -1,19 +1,23 @@
 using RB.Extensions.Vector;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Zenject;
 
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
+    private InputController _input;
+
+    [Inject]
+    private void Construct(InputController input)
+    {
+        _input = input;
+    }
 
     private void Update()
     {
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (_input.IsRightMouseButtonClicked == true)
         {
-            Vector2 mousePosition = Mouse.current.position.value;
-            Ray ray = Camera.main.ScreenPointToRay(mousePosition);
-            
-            if (Physics.Raycast(ray, out RaycastHit hit, 1000f, _layerMask))
+            if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit, 1000f, _layerMask))
             {
                 transform.position = hit.point.WithY(transform.position.y);
             }
