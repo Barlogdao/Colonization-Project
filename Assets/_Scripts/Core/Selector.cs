@@ -1,25 +1,23 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using RB.Extensions.Component;
 using System;
 using Zenject;
 
-public class Selector : MonoBehaviour
+public class Selector: ITickable
 {
     private InputController _input;
     private ISelectable _selectable;
-
 
     public event Action<ISelectable> Selected;
     public event Action Deselected;
 
     [Inject]
-    public void Construct(InputController input)
+    private void Construct(InputController input)
     {
         _input = input;
     }
 
-    private void Update()
+    public void Tick()
     {
         if (_input.IsLeftMouseButtonClicked == true)
         {

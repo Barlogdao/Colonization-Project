@@ -1,6 +1,6 @@
-using System;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class HUD : MonoBehaviour
 {
@@ -10,7 +10,8 @@ public class HUD : MonoBehaviour
     private ICommandCenterNotifier _commandCenter;
     private Selector _selector;
 
-    public void Initialize(Selector selector)
+    [Inject]
+    private void Construct(Selector selector)
     {
         _selector = selector;
 
@@ -30,7 +31,7 @@ public class HUD : MonoBehaviour
         {
             Show();
             _commandCenter = commandCenter;
-            _commandCenter.ResourceAmountChanged += OnResourceChanged;
+            _commandCenter.ResourceAmountChanged += OnResourceAmountChanged;
         }
     }
 
@@ -40,12 +41,12 @@ public class HUD : MonoBehaviour
 
         if (_commandCenter != null)
         {
-            _commandCenter.ResourceAmountChanged -= OnResourceChanged;
+            _commandCenter.ResourceAmountChanged -= OnResourceAmountChanged;
             _commandCenter = null;
         }
     }
 
-    private void OnResourceChanged(int value)
+    private void OnResourceAmountChanged(int value)
     {
         _resourceAmount.text = value.ToString();
     }

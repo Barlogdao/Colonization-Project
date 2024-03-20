@@ -12,9 +12,9 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     [SerializeField] private BuildingView _view;
     [SerializeField] private Flag _flagPrefab;
 
-    public BuildingView BuildingView => _view;
+    private ResourceStorage _resourceStorage;
 
-    private int _resourceAmount = 5;
+    private int _resourceAmount = 0;
 
     private Queue<Unit> _bindedUnits;
     private ResourceMap _resourceMap;
@@ -29,6 +29,7 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
 
     public event Action<int> ResourceAmountChanged;
 
+    public Vector3 Position => transform.position;
     private bool HasAvailableUnit => _bindedUnits.Count > 0;
     private bool HasHarvestableResource => _resourceMap.HasResources;
     private bool CanHarvestResource => HasAvailableUnit && HasHarvestableResource;
@@ -44,9 +45,25 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
 
     private void Awake()
     {
+        _resourceStorage = new ResourceStorage();
         _bindedUnits = new Queue<Unit>();
         _resourceMap = new ResourceMap();
         _resourceScanner.Initialize(_resourceMap);
+    }
+
+    private void OnEnable()
+    {
+        _resourceStorage.AmountChanged += OnResourceAmountChanged;
+    }
+
+    private void OnDisable()
+    {
+        _resourceStorage.AmountChanged -= OnResourceAmountChanged;
+    }
+
+    private void Start()
+    {
+        _view.ShowSpawn();
     }
 
     private void Update()
@@ -62,9 +79,26 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
 
     public void AcceptResource(Resource resource)
     {
-        _resourceAmount += resource.Amount;
-        ResourceAmountChanged?.Invoke(_resourceAmount);
+        _resourceStorage.Add(resource.Amount);
         resource.Remove();
+    }
+
+    public void Select()
+    {
+        _view.ShowOutline();
+
+        _inputController.ScanPressed += OnScanPressed;
+        _inputController.BuildPressed += OnBuildPressed;
+
+        ResourceAmountChanged?.Invoke(_resourceStorage.Amount);
+    }
+
+    public void Deselect()
+    {
+        _view.HideOutline();
+
+        _inputController.ScanPressed -= OnScanPressed;
+        _inputController.BuildPressed -= OnBuildPressed;
     }
 
     private void TryHarvestResource()
@@ -79,6 +113,11 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         unit.HarvestResource(this, targetResource);
     }
 
+    private void OnResourceAmountChanged(int amount)
+    {
+        ResourceAmountChanged?.Invoke(amount);
+    }
+
     private void OnScanPressed()
     {
         _resourceScanner.Scan();
@@ -87,7 +126,7 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     private void OnBuildPressed()
     {
         if (_buildService.IsActive == false)
-            _buildService.StartBuild(BuildCommandCenter);
+            _buildService.StartBuild(_view, BuildCommandCenter);
     }
 
     private void BuildCommandCenter(Vector3 position, Quaternion rotation)
@@ -114,13 +153,13 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
             _placedFlag.transform.rotation = rotation;
         }
 
-        yield return new WaitUntil(() => _resourceAmount >= _commandCenterCost && HasAvailableUnit);
+        yield return new WaitUntil(() => _resourceStorage.CanSpend(_commandCenterCost) && HasAvailableUnit);
 
         Unit unit = _bindedUnits.Dequeue();
         //unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);
 
         yield return unit.BuildRoutine(_placedFlag, _commandCenterSpawner);
-        SpendResources(_commandCenterCost);
+        _resourceStorage.TrySpend(_commandCenterCost);
         _isBuildinginQueue = false;
     }
 
@@ -129,32 +168,11 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         if (_isBuildinginQueue)
             return;
 
-        if (_resourceAmount >= _unitCost)
+        if (_resourceStorage.TrySpend(_unitCost) == true)
         {
             Unit unit = _unitFactory.Create(transform.position);
             BindUnit(unit);
-            SpendResources(_unitCost);
         }
-    }
-
-    private void SpendResources(int amount)
-    {
-        _resourceAmount -= amount;
-        ResourceAmountChanged?.Invoke(_resourceAmount);
-    }
-
-    public void Select()
-    {
-        _inputController.ScanPressed += OnScanPressed;
-        _inputController.BuildPressed += OnBuildPressed;
-
-        ResourceAmountChanged?.Invoke(_resourceAmount);
-    }
-
-    public void Deselect()
-    {
-        _inputController.ScanPressed -= OnScanPressed;
-        _inputController.BuildPressed -= OnBuildPressed;
     }
 
     public class Factory : PlaceholderFactory<CommandCenter> { }

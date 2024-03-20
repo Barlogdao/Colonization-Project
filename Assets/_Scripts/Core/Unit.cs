@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using RB.Extensions.Vector;
-using System;
-using TMPro;
 
 public class Unit : MonoBehaviour
 {

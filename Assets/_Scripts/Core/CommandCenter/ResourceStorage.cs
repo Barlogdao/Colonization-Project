@@ -2,16 +2,18 @@ using System;
 
 public class ResourceStorage
 {
-    private int _amount;
-
     public ResourceStorage()
     {
-        _amount = 0;
+        Amount = 0;
     }
+
+    public event Action<int> AmountChanged;
+
+    public int Amount { get; private set; }
 
     public bool CanSpend(int amount)
     {
-        return _amount >= amount;
+        return Amount >= amount;
     }
 
     public void Add(int amount)
@@ -19,7 +21,8 @@ public class ResourceStorage
         if (amount < 0)
             throw new ArgumentOutOfRangeException($"value {nameof(amount)} cant be negative");
 
-        _amount += amount;
+        Amount += amount;
+        AmountChanged?.Invoke(Amount);
     }
 
     public bool TrySpend(int amount)
@@ -30,11 +33,13 @@ public class ResourceStorage
         Spend(amount);
         return true;
     }
+
     private void Spend(int amount)
     {
         if (amount < 0)
             throw new ArgumentOutOfRangeException($"value {nameof(amount)} cant be negative");
 
-        _amount -= amount;
+        Amount -= amount;
+        AmountChanged?.Invoke(Amount);
     }
 }

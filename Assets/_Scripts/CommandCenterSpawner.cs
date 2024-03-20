@@ -14,7 +14,6 @@ public class CommandCenterSpawner
         CommandCenter commandCenter = _factory.Create();
 
         commandCenter.transform.SetPositionAndRotation(position, rotation);
-        commandCenter.BuildingView.ShowSpawn();
 
         return commandCenter;
     }

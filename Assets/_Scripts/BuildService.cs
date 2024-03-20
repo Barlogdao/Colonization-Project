@@ -1,24 +1,22 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
 public class BuildService : MonoBehaviour
 {
-    [SerializeField] private CommandCenter _prefab;
     [SerializeField] private Blueprint _blueprintPrefab;
-
     [SerializeField] private float _rotateSpeed;
-
     [SerializeField] private LayerMask _placementLayer;
 
     private Blueprint _bluePrint;
 
     public bool IsActive { get; private set; } = false;
-    private System.Action<Vector3, Quaternion> _buildCallback;
-    public void StartBuild(System.Action<Vector3, Quaternion> buildCallback)
+    private Action<Vector3, Quaternion> _buildCallback;
+    public void StartBuild(BuildingView view, Action<Vector3, Quaternion> buildCallback)
     {
         _bluePrint = Instantiate(_blueprintPrefab);
-        _bluePrint.Initialize(_prefab.BuildingView);
+        _bluePrint.Initialize(view);
         _buildCallback = buildCallback;
         IsActive = true;
     }

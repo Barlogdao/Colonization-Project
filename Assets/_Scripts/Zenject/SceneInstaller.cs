@@ -11,15 +11,22 @@ public class SceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindInput();
+        Container.BindInterfacesAndSelfTo<Selector>().AsSingle();
+
         Container.Bind<UnitFactory>().FromInstance(_unitFactory).AsSingle();
 
-        Container.Bind<BuildService>().FromInstance(_buildService).AsSingle();
-        Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle();
-        Container.BindFactory<CommandCenter, CommandCenter.Factory>().FromComponentInNewPrefab(_commandCenterPrefab);
+        BindCommandCenter();
     }
 
     private void BindInput()
     {
         Container.BindInterfacesAndSelfTo<InputController>().AsSingle().NonLazy();
+    }
+
+    private void BindCommandCenter()
+    {
+        Container.Bind<BuildService>().FromInstance(_buildService).AsSingle();
+        Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle();
+        Container.BindFactory<CommandCenter, CommandCenter.Factory>().FromComponentInNewPrefab(_commandCenterPrefab);
     }
 }

@@ -10,11 +10,11 @@ public class InputController : ITickable, IDisposable
     public event Action ScanPressed;
     public event Action BuildPressed;
 
-    public Vector2 CameraMovementInput { get; private set; }
     public bool IsLeftMouseButtonClicked => Mouse.current.leftButton.wasPressedThisFrame;
     public bool IsRightMouseButtonClicked => Mouse.current.rightButton.wasPressedThisFrame;
     public Vector2 MousePosition => Mouse.current.position.value;
     public Ray ScreenPointRay => Camera.main.ScreenPointToRay(MousePosition);
+    public Vector2 CameraMovementInput { get; private set; }
 
     public InputController()
     {
