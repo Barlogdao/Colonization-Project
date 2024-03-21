@@ -13,7 +13,7 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     [SerializeField] private Flag _flagPrefab;
 
     private InputController _inputController;
-    
+
     private ResourceMap _resourceMap;
     private ResourceStorage _resourceStorage;
     private BuildService _buildService;
@@ -144,13 +144,10 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         {
             _placedFlag = Instantiate(_flagPrefab, position, rotation);
         }
-        else
-        {
-            _placedFlag.transform.position = position;
-            _placedFlag.transform.rotation = rotation;
-        }
 
-        yield return new WaitUntil(() => HasAvailableUnit && _resourceStorage.TrySpend(_commandCenterCost) == true );
+        _placedFlag.Set(position, rotation);
+
+        yield return new WaitUntil(() => HasAvailableUnit && _resourceStorage.TrySpend(_commandCenterCost) == true);
 
         Unit unit = _bindedUnits.Dequeue();
         unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);

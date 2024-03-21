@@ -200,12 +200,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2c416caa63504b4d91b3f4cafbb4d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildServicePrefab: {fileID: 5599056823429586273, guid: 0d1084df84fc4df47b08f0348b8e2065,
+    type: 3}
   _unitFactory:
     _prefab: {fileID: 3328585492434075357, guid: 04fccfd08b3b07047be0e885f4874f54,
       type: 3}
   _commandCenterPrefab: {fileID: -7924684421007698206, guid: cc8fd44a44c52d242b109f9457ddef1e,
-    type: 3}
-  _buildServicePrefab: {fileID: 5599056823429586273, guid: 0d1084df84fc4df47b08f0348b8e2065,
     type: 3}
 --- !u!1001 &26480317
 PrefabInstance:
@@ -3297,8 +3297,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _units:
   - {fileID: 443730222}
-  - {fileID: 26480318}
   - {fileID: 1540913874}
+  - {fileID: 26480318}
   _commandCenterPoint: {fileID: 337054567}
 --- !u!4 &1949991556
 Transform:
