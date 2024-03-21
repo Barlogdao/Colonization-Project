@@ -5,7 +5,6 @@ public class Blueprint : MonoBehaviour
     [SerializeField] private Material _validMaterial;
     [SerializeField] private Material _unvalidMaterial;
 
-    [SerializeField] private LayerMask _placementLayer;
     [SerializeField] private LayerMask _collisionLayer;
 
     private BuildingView _buildingView;
@@ -13,17 +12,24 @@ public class Blueprint : MonoBehaviour
     private float _colliderRadius;
 
     public bool CanPlace { get; private set; }
+    public bool IsActive { get; private set; } = false;
 
-    public void Initialize(BuildingView buildingView)
+    public void Activate(BuildingView buildingView)
     {
+        IsActive = true;
+
         _buildingView = Instantiate(buildingView, transform);
         _colliderOffset = _buildingView.SphereCollider.center;
         _colliderRadius = _buildingView.SphereCollider.radius;
-        
-        foreach (Transform child in transform)
-        {
-            child.gameObject.layer = gameObject.layer;
-        }
+
+        ChangeChildLayers();
+    }
+
+    public void Deactivate()
+    {
+        IsActive = false;
+
+        Destroy(_buildingView.gameObject);
     }
 
     public void Move(Vector3 position)
@@ -42,6 +48,7 @@ public class Blueprint : MonoBehaviour
         {
             CanPlace = false;
             _buildingView.ChangeMaterials(_unvalidMaterial);
+           
         }
         else
         {
@@ -50,8 +57,11 @@ public class Blueprint : MonoBehaviour
         }
     }
 
-    public void Remove()
+    private void ChangeChildLayers()
     {
-        Destroy(gameObject);
+        foreach (Transform child in transform)
+        {
+            child.gameObject.layer = gameObject.layer;
+        }
     }
 }

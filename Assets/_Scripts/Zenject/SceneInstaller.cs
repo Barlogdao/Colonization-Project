@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -6,12 +7,13 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private UnitFactory _unitFactory;
 
     [SerializeField] private CommandCenter _commandCenterPrefab;
-    [SerializeField] private BuildService _buildService;
+    [SerializeField] private BuildService _buildServicePrefab;
 
     public override void InstallBindings()
     {
         BindInput();
-        Container.BindInterfacesAndSelfTo<Selector>().AsSingle();
+        BindSelector();
+        BindBuildService();
 
         Container.Bind<UnitFactory>().FromInstance(_unitFactory).AsSingle();
 
@@ -20,13 +22,26 @@ public class SceneInstaller : MonoInstaller
 
     private void BindInput()
     {
-        Container.BindInterfacesAndSelfTo<InputController>().AsSingle().NonLazy();
+        Container.BindInterfacesAndSelfTo<InputController>().AsSingle();
+    }
+
+    private void BindSelector()
+    {
+        Container.BindInterfacesAndSelfTo<Selector>().AsSingle();
+    }
+
+    private void BindBuildService()
+    {
+        Container.Bind<BuildService>().FromComponentInNewPrefab(_buildServicePrefab).AsSingle();
     }
 
     private void BindCommandCenter()
     {
-        Container.Bind<BuildService>().FromInstance(_buildService).AsSingle();
         Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle();
-        Container.BindFactory<CommandCenter, CommandCenter.Factory>().FromComponentInNewPrefab(_commandCenterPrefab);
+
+        Container
+            .BindFactory<CommandCenter, CommandCenter.Factory>()
+            .FromComponentInNewPrefab(_commandCenterPrefab)
+            .WithGameObjectName("Command Center");
     }
 }

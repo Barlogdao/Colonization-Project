@@ -53,6 +53,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""459f7647-cf33-4318-a533-8d01a7318106"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,6 +141,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""CameraMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad280e6e-700f-4ed3-a762-952453dcf541"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20a37357-f01f-48de-908e-530f6d218cbe"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -160,6 +191,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Scan = m_Game.FindAction("Scan", throwIfNotFound: true);
         m_Game_Build = m_Game.FindAction("Build", throwIfNotFound: true);
         m_Game_CameraMovement = m_Game.FindAction("CameraMovement", throwIfNotFound: true);
+        m_Game_Cancel = m_Game.FindAction("Cancel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -224,6 +256,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Scan;
     private readonly InputAction m_Game_Build;
     private readonly InputAction m_Game_CameraMovement;
+    private readonly InputAction m_Game_Cancel;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -231,6 +264,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Scan => m_Wrapper.m_Game_Scan;
         public InputAction @Build => m_Wrapper.m_Game_Build;
         public InputAction @CameraMovement => m_Wrapper.m_Game_CameraMovement;
+        public InputAction @Cancel => m_Wrapper.m_Game_Cancel;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -249,6 +283,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CameraMovement.started += instance.OnCameraMovement;
             @CameraMovement.performed += instance.OnCameraMovement;
             @CameraMovement.canceled += instance.OnCameraMovement;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -262,6 +299,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @CameraMovement.started -= instance.OnCameraMovement;
             @CameraMovement.performed -= instance.OnCameraMovement;
             @CameraMovement.canceled -= instance.OnCameraMovement;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -293,5 +333,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnScan(InputAction.CallbackContext context);
         void OnBuild(InputAction.CallbackContext context);
         void OnCameraMovement(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
     }
 }

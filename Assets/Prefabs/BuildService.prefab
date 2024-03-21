@@ -1,5 +1,54 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5855913519607679602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6410798209563362543}
+  - component: {fileID: 3402390165340255786}
+  m_Layer: 0
+  m_Name: Blueprint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6410798209563362543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855913519607679602}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3720184573723241783}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3402390165340255786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5855913519607679602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 162c2227ff20dff44bf5aeab7eebc967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _validMaterial: {fileID: 2100000, guid: 6190a5a3216f0834585cf0b32aecae5e, type: 2}
+  _unvalidMaterial: {fileID: 2100000, guid: b000661afbe6bb048b94a56ec836466a, type: 2}
+  _collisionLayer:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!1 &6898288063823763603
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,7 +78,8 @@ Transform:
   m_LocalPosition: {x: -11.703499, y: 2.79411, z: 3.7241578}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6410798209563362543}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5599056823429586273
@@ -44,11 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 985f9ff3e988b81459806e494762aeb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _prefab: {fileID: -7924684421007698206, guid: cc8fd44a44c52d242b109f9457ddef1e,
-    type: 3}
-  _view: {fileID: 7259349224680454175, guid: 0e5f2c527b9dad047b185f9d11f36582, type: 3}
-  _collisionLayers:
+  _blueprint: {fileID: 3402390165340255786}
+  _rotateSpeed: 0.1
+  _placementLayer:
     serializedVersion: 2
     m_Bits: 512
-  _validMaterial: {fileID: 2100000, guid: aa560d30595c0374d8d827a65e258898, type: 2}
-  _unvalidMaterial: {fileID: 0}

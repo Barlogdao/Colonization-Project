@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshRenderer))]
-public class ScannerVisual : MonoBehaviour
+public class ScannerView : MonoBehaviour
 {
     [SerializeField] private float _scanDuration = 0.5f;
     [SerializeField] private Ease _ease;
@@ -26,8 +26,10 @@ public class ScannerVisual : MonoBehaviour
         transform.DOScale(viewScale, _scanDuration).SetEase(_ease).OnComplete(Hide);
     }
 
-    private void Show() => _renderer.enabled = true;
-
+    private void Show()
+    {
+        _renderer.enabled = true;
+    }
     private void Hide()
     {
         _renderer.enabled = false;

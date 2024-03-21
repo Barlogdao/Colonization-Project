@@ -12,16 +12,16 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     [SerializeField] private BuildingView _view;
     [SerializeField] private Flag _flagPrefab;
 
+    private InputController _inputController;
+    
+    private ResourceMap _resourceMap;
     private ResourceStorage _resourceStorage;
-
-    private int _resourceAmount = 0;
+    private BuildService _buildService;
 
     private Queue<Unit> _bindedUnits;
-    private ResourceMap _resourceMap;
+
     private UnitFactory _unitFactory;
     private CommandCenterSpawner _commandCenterSpawner;
-    private InputController _inputController;
-    private BuildService _buildService;
 
     private bool _isBuildinginQueue = false;
     private Coroutine _buildRoutine;
@@ -41,14 +41,14 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         _unitFactory = unitFactory;
         _commandCenterSpawner = commandCenterSpawner;
         _buildService = buildService;
-    }
-
-    private void Awake()
-    {
         _resourceStorage = new ResourceStorage();
         _bindedUnits = new Queue<Unit>();
         _resourceMap = new ResourceMap();
         _resourceScanner.Initialize(_resourceMap);
+    }
+
+    private void Awake()
+    {
     }
 
     private void OnEnable()
@@ -125,7 +125,7 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
 
     private void OnBuildPressed()
     {
-        if (_buildService.IsActive == false)
+        if (_buildService.IsAvaliable == false)
             _buildService.StartBuild(_view, BuildCommandCenter);
     }
 

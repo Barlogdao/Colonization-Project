@@ -1,17 +1,18 @@
-using DG.Tweening;
 using UnityEngine;
+using DG.Tweening;
 using EPOOutline;
 
 [RequireComponent (typeof(SphereCollider))]
 public class BuildingView : MonoBehaviour
 {
     [SerializeField] private float _spawnHeight;
-    [SerializeField] private float _duration;
+    [SerializeField] private float _spawnDuration;
     [SerializeField] private Ease _ease;
+
     [SerializeField] private ParticleSystem _landingSmoke;
-    private Outlinable _outlinable;
 
     private MeshRenderer[] _meshRenderers;
+    private Outlinable _outlinable;
     public SphereCollider SphereCollider { get; private set; }
 
     private void Awake()
@@ -44,6 +45,6 @@ public class BuildingView : MonoBehaviour
 
     public void ShowSpawn()
     {
-        transform.DOMoveY(_spawnHeight, _duration).From().SetEase(_ease).OnComplete(() => _landingSmoke.Play());
+        transform.DOMoveY(_spawnHeight, _spawnDuration).From().SetEase(_ease).OnComplete(() => _landingSmoke.Play());
     }
 }

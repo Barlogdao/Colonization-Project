@@ -7,7 +7,7 @@ public class ResourceScanner : MonoBehaviour
     [SerializeField] private float _scanCooldown;
 
     [SerializeField] private LayerMask _resourceLayer;
-    [SerializeField] private ScannerVisual _visual;
+    [SerializeField] private ScannerView _view;
 
     private ResourceMap _resourceMap;
     private float _elapsedTime;
@@ -28,7 +28,7 @@ public class ResourceScanner : MonoBehaviour
         if (_elapsedTime < _scanCooldown)
             return;
 
-        _visual.DoScan(_scanRadius);
+        _view.DoScan(_scanRadius);
 
         foreach (Resource resource in GetScannedResources())
         {

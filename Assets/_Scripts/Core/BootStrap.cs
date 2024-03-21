@@ -1,19 +1,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using Zenject;
 
 public class BootStrap : MonoBehaviour
 {
-    [SerializeField] private CommandCenter _commandCenter;
     [SerializeField] private List<Unit> _units;
-    [SerializeField] private HUD _hud;
+    [SerializeField] private Transform _commandCenterPoint;
+
+    private CommandCenterSpawner _commandCenterSpawner;
+
+    [Inject]
+    private void Construct(CommandCenterSpawner commandCenterSpawner)
+    {
+        _commandCenterSpawner = commandCenterSpawner;       
+    }
 
     private void Awake()
     {
+        CommandCenter commandCenter = _commandCenterSpawner.Spawn(_commandCenterPoint.position, Quaternion.identity);
+
         foreach (Unit unit in _units)
         {
-            _commandCenter.BindUnit(unit);
+            commandCenter.BindUnit(unit);
         }
     }
 

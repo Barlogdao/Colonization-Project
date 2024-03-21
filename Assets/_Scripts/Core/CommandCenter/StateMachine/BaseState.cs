@@ -53,7 +53,7 @@ public abstract class BaseState: IState
 
     private void OnBuildPressed()
     {
-        if (_buildService.IsActive == false)
+        if (_buildService.IsAvaliable == false)
             _buildService.StartBuild(_buildingView, BuildCommandCenter);
     }
 

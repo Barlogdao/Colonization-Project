@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class CameraController : MonoBehaviour
+public class CameraMover : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerMask;
     [SerializeField] private float _moveSpeed;

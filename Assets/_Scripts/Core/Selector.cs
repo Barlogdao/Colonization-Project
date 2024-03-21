@@ -3,18 +3,18 @@ using RB.Extensions.Component;
 using System;
 using Zenject;
 
-public class Selector: ITickable
+public class Selector : ITickable
 {
-    private InputController _input;
+    private readonly InputController _input;
     private ISelectable _selectable;
 
     public event Action<ISelectable> Selected;
     public event Action Deselected;
 
-    [Inject]
-    private void Construct(InputController input)
+    public Selector(InputController input)
     {
         _input = input;
+        _selectable = null;
     }
 
     public void Tick()
@@ -30,23 +30,32 @@ public class Selector: ITickable
         if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit) == false)
             return;
 
-        if (hit.collider.TryGetComponentInParent(out ISelectable selectable) == false)
+        if (hit.collider.TryGetComponentInParent(out ISelectable selectable) == true)
         {
-            _selectable?.Deselect();
-            Deselected?.Invoke();
-            _selectable = null;
-            return;
+            if (selectable == _selectable)
+                return;
+            
+            Select(selectable);
         }
-
-        if (selectable == _selectable)
+        else
         {
-            return;
+            DeselectCurrent(); ;
         }
+    }
 
-        _selectable?.Deselect();
-        Deselected?.Invoke();
+    private void Select(ISelectable selectable)
+    {
+        DeselectCurrent();
+
         _selectable = selectable;
         Selected?.Invoke(_selectable);
         _selectable.Select();
+    }
+
+    private void DeselectCurrent()
+    {
+        Deselected?.Invoke();
+        _selectable?.Deselect();
+        _selectable = null;
     }
 }
