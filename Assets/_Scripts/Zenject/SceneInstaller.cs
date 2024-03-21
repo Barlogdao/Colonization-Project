@@ -4,10 +4,9 @@ using Zenject;
 
 public class SceneInstaller : MonoInstaller
 {
-    [SerializeField] private UnitFactory _unitFactory;
-
-    [SerializeField] private CommandCenter _commandCenterPrefab;
     [SerializeField] private BuildService _buildServicePrefab;
+    [SerializeField] private UnitFactory _unitFactory;
+    [SerializeField] private CommandCenter _commandCenterPrefab;
 
     public override void InstallBindings()
     {
@@ -38,10 +37,6 @@ public class SceneInstaller : MonoInstaller
     private void BindCommandCenter()
     {
         Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle();
-
-        Container
-            .BindFactory<CommandCenter, CommandCenter.Factory>()
-            .FromComponentInNewPrefab(_commandCenterPrefab)
-            .WithGameObjectName("Command Center");
+        Container.BindFactory<CommandCenter, CommandCenter.Factory>().FromComponentInNewPrefab(_commandCenterPrefab);
     }
 }

@@ -10,6 +10,7 @@ public class BuildService : MonoBehaviour
     [SerializeField] private LayerMask _placementLayer;
 
     private InputController _input;
+    private Camera _camera;
 
     public bool IsAvaliable { get; private set; } = false;
     private Action<Vector3, Quaternion> _buildCallback;
@@ -18,29 +19,7 @@ public class BuildService : MonoBehaviour
     private void Construct(InputController inputController)
     {
         _input = inputController;
-    }
-
-    public void EnterBuildMode()
-    {
-        _input.CancelPressed += ExitBuildMode;
-    }
-
-    private void ExitBuildMode()
-    {
-        _input.CancelPressed -= ExitBuildMode;
-
-        _blueprint.Deactivate();
-        _buildCallback = null;
-        IsAvaliable = false;
-    }
-
-
-    public void StartBuild(BuildingView view, Action<Vector3, Quaternion> buildCallback)
-    {
-        _blueprint.Activate(view);
-        _buildCallback = buildCallback;
-        IsAvaliable = true;
-        EnterBuildMode();
+        _camera = Camera.main;
     }
 
     private void Update()
@@ -48,46 +27,48 @@ public class BuildService : MonoBehaviour
         if (_blueprint.IsActive == false)
             return;
 
-        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.value);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, 1000f, _placementLayer) == true)
+        if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit, _camera.farClipPlane, _placementLayer) == true)
         {
-
-            _blueprint.Move(hitInfo.point);
+            _blueprint.Move(hit.point);
 
             RotationHandle();
-            _blueprint.PlacementCheck();
 
             HandleInput();
         }
     }
 
-    private void HandleInput()
+    public void EnterBuildMode(BuildingView view, Action<Vector3, Quaternion> buildCallback)
     {
+        _blueprint.Activate(view);
+        _buildCallback = buildCallback;
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            LeftClickHandle();
-        }
+        _input.CancelPressed += ExitBuildMode;
+        IsAvaliable = true;
+    }
+
+    private void ExitBuildMode()
+    {
+        _blueprint.Deactivate();
+        _buildCallback = null;
+
+        _input.CancelPressed -= ExitBuildMode;
+        IsAvaliable = false;
     }
 
     private void RotationHandle()
     {
         float mouseWheelInput = Mouse.current.scroll.y.value;
-        _blueprint.Rotate(mouseWheelInput * _rotateSpeed);
+        float angle = mouseWheelInput * _rotateSpeed;
+
+        _blueprint.Rotate(angle);
     }
 
-    private void LeftClickHandle()
+    private void HandleInput()
     {
-        if (_blueprint.CanPlace == true)
+        if (_input.IsLeftMouseButtonClicked && _blueprint.CanPlace)
         {
             _buildCallback.Invoke(_blueprint.transform.position, _blueprint.transform.rotation);
             ExitBuildMode();
         }
-    }
-
-    private void RightClickHandle()
-    {
-        ExitBuildMode();
     }
 }

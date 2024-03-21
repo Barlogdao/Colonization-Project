@@ -54,7 +54,7 @@ public abstract class BaseState: IState
     private void OnBuildPressed()
     {
         if (_buildService.IsAvaliable == false)
-            _buildService.StartBuild(_buildingView, BuildCommandCenter);
+            _buildService.EnterBuildMode(_buildingView, BuildCommandCenter);
     }
 
     private void TryHarvestResource()

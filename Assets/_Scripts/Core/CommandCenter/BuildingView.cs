@@ -2,25 +2,26 @@ using UnityEngine;
 using DG.Tweening;
 using EPOOutline;
 
-[RequireComponent (typeof(SphereCollider))]
+[RequireComponent(typeof(Collider))]
 public class BuildingView : MonoBehaviour
 {
     [SerializeField] private float _spawnHeight;
     [SerializeField] private float _spawnDuration;
     [SerializeField] private Ease _ease;
-
     [SerializeField] private ParticleSystem _landingSmoke;
 
     private MeshRenderer[] _meshRenderers;
     private Outlinable _outlinable;
-    public SphereCollider SphereCollider { get; private set; }
+    private Collider _collider;
+
+    public Bounds ColliderBounds =>_collider.bounds;
 
     private void Awake()
     {
         _meshRenderers = GetComponentsInChildren<MeshRenderer>();
-        SphereCollider = GetComponent<SphereCollider>();
         _outlinable = GetComponent<Outlinable>();
-        
+        _collider = GetComponent<Collider>();
+
         HideOutline();
     }
 
@@ -35,12 +36,10 @@ public class BuildingView : MonoBehaviour
     }
 
 
-    public void ChangeMaterials(Material material)
+    public void SetMaterial(Material material)
     {
-        foreach (var renderer in _meshRenderers)
-        {
+        foreach (MeshRenderer renderer in _meshRenderers)
             renderer.material = material;
-        }
     }
 
     public void ShowSpawn()

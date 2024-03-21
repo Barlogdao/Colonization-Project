@@ -41,14 +41,11 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         _unitFactory = unitFactory;
         _commandCenterSpawner = commandCenterSpawner;
         _buildService = buildService;
+
         _resourceStorage = new ResourceStorage();
         _bindedUnits = new Queue<Unit>();
         _resourceMap = new ResourceMap();
         _resourceScanner.Initialize(_resourceMap);
-    }
-
-    private void Awake()
-    {
     }
 
     private void OnEnable()
@@ -126,7 +123,7 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     private void OnBuildPressed()
     {
         if (_buildService.IsAvaliable == false)
-            _buildService.StartBuild(_view, BuildCommandCenter);
+            _buildService.EnterBuildMode(_view, BuildCommandCenter);
     }
 
     private void BuildCommandCenter(Vector3 position, Quaternion rotation)
@@ -153,13 +150,11 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
             _placedFlag.transform.rotation = rotation;
         }
 
-        yield return new WaitUntil(() => _resourceStorage.CanSpend(_commandCenterCost) && HasAvailableUnit);
+        yield return new WaitUntil(() => HasAvailableUnit && _resourceStorage.TrySpend(_commandCenterCost) == true );
 
         Unit unit = _bindedUnits.Dequeue();
-        //unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);
+        unit.BuildCommandCenter(_placedFlag, _commandCenterSpawner);
 
-        yield return unit.BuildRoutine(_placedFlag, _commandCenterSpawner);
-        _resourceStorage.TrySpend(_commandCenterCost);
         _isBuildinginQueue = false;
     }
 
