@@ -51,13 +51,6 @@ public class HUD : MonoBehaviour
         _resourceAmount.text = value.ToString();
     }
 
-    private void Show()
-    {
-        _canvas.enabled = true;
-    }
-
-    private void Hide()
-    {
-        _canvas.enabled = false;
-    }
+    private void Show() => _canvas.enabled = true;
+    private void Hide() => _canvas.enabled = false;
 }

@@ -12,8 +12,8 @@ public class BuildService : MonoBehaviour
     private InputController _input;
     private Camera _camera;
 
-    public bool IsAvaliable { get; private set; } = false;
-    private Action<Vector3, Quaternion> _buildCallback;
+    public bool IsAvaliable { get; private set; } = true;
+    private Action<Vector3, Quaternion> _onBlueprinSet;
 
     [Inject]
     private void Construct(InputController inputController)
@@ -37,22 +37,22 @@ public class BuildService : MonoBehaviour
         }
     }
 
-    public void EnterBuildMode(BuildingView view, Action<Vector3, Quaternion> buildCallback)
+    public void ActivateBuildMode(BuildingView view, Action<Vector3, Quaternion> onBlueprintSet)
     {
         _blueprint.Activate(view);
-        _buildCallback = buildCallback;
+        _onBlueprinSet = onBlueprintSet;
 
-        _input.CancelPressed += ExitBuildMode;
-        IsAvaliable = true;
+        _input.CancelPressed += DeactivateBuildMode;
+        IsAvaliable = false;
     }
 
-    private void ExitBuildMode()
+    private void DeactivateBuildMode()
     {
         _blueprint.Deactivate();
-        _buildCallback = null;
+        _onBlueprinSet = null;
 
-        _input.CancelPressed -= ExitBuildMode;
-        IsAvaliable = false;
+        _input.CancelPressed -= DeactivateBuildMode;
+        IsAvaliable = true;
     }
 
     private void RotationHandle()
@@ -67,8 +67,8 @@ public class BuildService : MonoBehaviour
     {
         if (_input.IsLeftMouseButtonClicked && _blueprint.CanPlace)
         {
-            _buildCallback.Invoke(_blueprint.transform.position, _blueprint.transform.rotation);
-            ExitBuildMode();
+            _onBlueprinSet.Invoke(_blueprint.transform.position, _blueprint.transform.rotation);
+            DeactivateBuildMode();
         }
     }
 }

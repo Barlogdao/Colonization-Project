@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -13,8 +12,7 @@ public class SceneInstaller : MonoInstaller
         BindInput();
         BindSelector();
         BindBuildService();
-
-        Container.Bind<UnitFactory>().FromInstance(_unitFactory).AsSingle();
+        BindUnitFactory();
 
         BindCommandCenter();
     }
@@ -34,9 +32,14 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<BuildService>().FromComponentInNewPrefab(_buildServicePrefab).AsSingle();
     }
 
+    private void BindUnitFactory()
+    {
+        Container.Bind<UnitFactory>().FromInstance(_unitFactory).AsSingle();
+    }
+
     private void BindCommandCenter()
     {
-        Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle();
+        Container.BindInterfacesAndSelfTo<CommandCenterSpawner>().AsSingle().NonLazy();
         Container.BindFactory<CommandCenter, CommandCenter.Factory>().FromComponentInNewPrefab(_commandCenterPrefab);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using RB.Extensions.Vector;
@@ -12,46 +13,27 @@ public class Unit : MonoBehaviour
         StartCoroutine(HarvestRoutine(commandCenter, resource));
     }
 
-    public void BuildCommandCenter(Flag flag, CommandCenterSpawner commandCenterFactory)
+    public void BuildConstruction(Flag flag, Action<Unit> onReachFlag)
     {
-        StartCoroutine(BuildRoutine(flag, commandCenterFactory));
+        StartCoroutine(BuildRoutine(flag, onReachFlag));
     }
 
     private IEnumerator HarvestRoutine(CommandCenter commandCenter, Resource resource)
     {
-        Vector3 targetPosition = resource.transform.position.WithY(transform.position.y);
-
-        yield return MoveToTarget(targetPosition);
+        yield return MoveToTarget(resource.transform);
 
         resource.Harvest(transform, _cargo.position);
 
-        targetPosition = commandCenter.transform.position.WithY(transform.position.y);
-
-        yield return MoveToTarget(targetPosition);
+        yield return MoveToTarget(commandCenter.transform);
 
         UnloadCargo(commandCenter,resource);
     }
 
-    public IEnumerator BuildRoutine(Flag flag, CommandCenterSpawner commandCenterSpawner)
+    public IEnumerator BuildRoutine(Flag flag, Action<Unit> onReachFlag)
     {
         yield return MoveToTarget(flag.transform);
 
-        CommandCenter commandCenter = commandCenterSpawner.Spawn(flag.transform.position, flag.transform.rotation);
-        commandCenter.BindUnit(this);
-
-        Destroy(flag.gameObject);
-    }
-
-    private IEnumerator MoveToTarget(Vector3 targetPosition)
-    {
-        transform.LookAt(targetPosition);
-
-        while (transform.position != targetPosition)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, _speed * Time.deltaTime);
-
-            yield return null;
-        }
+        onReachFlag?.Invoke(this);
     }
 
     private IEnumerator MoveToTarget(Transform target)
