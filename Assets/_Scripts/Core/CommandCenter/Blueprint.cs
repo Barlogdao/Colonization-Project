@@ -4,7 +4,6 @@ public class Blueprint : MonoBehaviour
 {
     [SerializeField] private Material _validMaterial;
     [SerializeField] private Material _unvalidMaterial;
-    [SerializeField] private LayerMask _collisionLayer;
 
     private BuildingView _buildingView;
 
@@ -16,8 +15,6 @@ public class Blueprint : MonoBehaviour
         IsActive = true;
 
         _buildingView = Instantiate(buildingView, transform);
-
-        ChangeChildLayers();
     }
 
     public void Deactivate()
@@ -40,9 +37,7 @@ public class Blueprint : MonoBehaviour
 
     private void PlacementCheck()
     {
-        Bounds bounds = _buildingView.ColliderBounds;
-
-        if (Physics.CheckBox(bounds.center, bounds.extents, transform.rotation, _collisionLayer) == true)
+        if(_buildingView.IsCollide == true)
         {
             CanPlace = false;
             _buildingView.SetMaterial(_unvalidMaterial);
@@ -51,14 +46,6 @@ public class Blueprint : MonoBehaviour
         {
             CanPlace = true;
             _buildingView.SetMaterial(_validMaterial);
-        }
-    }
-
-    private void ChangeChildLayers()
-    {
-        foreach (Transform child in transform)
-        {
-            child.gameObject.layer = gameObject.layer;
         }
     }
 }

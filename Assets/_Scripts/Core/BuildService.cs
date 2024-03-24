@@ -12,8 +12,9 @@ public class BuildService : MonoBehaviour
     private InputController _input;
     private Camera _camera;
 
+    private Action<Vector3, Quaternion> _onBlueprintSet;
+
     public bool IsAvaliable { get; private set; } = true;
-    private Action<Vector3, Quaternion> _onBlueprinSet;
 
     [Inject]
     private void Construct(InputController inputController)
@@ -40,7 +41,7 @@ public class BuildService : MonoBehaviour
     public void ActivateBuildMode(BuildingView view, Action<Vector3, Quaternion> onBlueprintSet)
     {
         _blueprint.Activate(view);
-        _onBlueprinSet = onBlueprintSet;
+        _onBlueprintSet = onBlueprintSet;
 
         _input.CancelPressed += DeactivateBuildMode;
         IsAvaliable = false;
@@ -49,7 +50,7 @@ public class BuildService : MonoBehaviour
     private void DeactivateBuildMode()
     {
         _blueprint.Deactivate();
-        _onBlueprinSet = null;
+        _onBlueprintSet = null;
 
         _input.CancelPressed -= DeactivateBuildMode;
         IsAvaliable = true;
@@ -67,7 +68,7 @@ public class BuildService : MonoBehaviour
     {
         if (_input.IsLeftMouseButtonClicked && _blueprint.CanPlace)
         {
-            _onBlueprinSet.Invoke(_blueprint.transform.position, _blueprint.transform.rotation);
+            _onBlueprintSet.Invoke(_blueprint.transform.position, _blueprint.transform.rotation);
             DeactivateBuildMode();
         }
     }

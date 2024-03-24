@@ -50,14 +50,14 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
         _resourceStorage.AmountChanged -= OnResourceAmountChanged;
     }
 
-    private void Start()
-    {
-        _view.ShowSpawn();
-    }
-
     private void Update()
     {
         TryHarvestResource();
+    }
+
+    private void Start()
+    {
+        _view.ShowSpawn();
     }
 
     public void BindUnit(Unit unit)

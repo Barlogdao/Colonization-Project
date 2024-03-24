@@ -2,8 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using EPOOutline;
 
-[RequireComponent(typeof(Collider))]
-public class BuildingView : MonoBehaviour
+public class BuildingView : View
 {
     [SerializeField] private float _spawnHeight;
     [SerializeField] private float _spawnDuration;
@@ -12,15 +11,13 @@ public class BuildingView : MonoBehaviour
 
     private MeshRenderer[] _meshRenderers;
     private Outlinable _outlinable;
-    private Collider _collider;
 
-    public Bounds ColliderBounds =>_collider.bounds;
-
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
+
         _meshRenderers = GetComponentsInChildren<MeshRenderer>();
         _outlinable = GetComponent<Outlinable>();
-        _collider = GetComponent<Collider>();
 
         HideOutline();
     }

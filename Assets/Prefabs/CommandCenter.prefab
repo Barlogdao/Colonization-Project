@@ -4847,6 +4847,7 @@ GameObject:
   - component: {fileID: 8290830260948786212}
   - component: {fileID: 8874227051385195800}
   - component: {fileID: 5323811076326266003}
+  - component: {fileID: 9216999725004731908}
   m_Layer: 8
   m_Name: View
   m_TagString: Untagged
@@ -4952,7 +4953,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -5075,6 +5076,33 @@ MonoBehaviour:
     fillPass:
       shader: {fileID: 0}
       serializedProperties: []
+--- !u!54 &9216999725004731908
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196160822610497056}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &2772235759159756742
 GameObject:
   m_ObjectHideFlags: 0
@@ -5124,11 +5152,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbace140e6bd19f4ea2d440d8aae3e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _resourceScanner: {fileID: 3828167386712747995}
   _view: {fileID: 3488241390865399037}
-  _flag: {fileID: 647157379023764456}
+  _resourceScanner: {fileID: 3828167386712747995}
   _commandCenterBuilder: {fileID: 8073255607230915971}
   _unitCreatorModule: {fileID: 9200538557447230285}
+  _flag: {fileID: 647157379023764456}
 --- !u!114 &8073255607230915971
 MonoBehaviour:
   m_ObjectHideFlags: 0
