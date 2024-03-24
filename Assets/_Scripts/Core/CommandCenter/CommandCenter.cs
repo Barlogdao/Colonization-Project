@@ -26,6 +26,8 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     private bool HasHarvestableResource => _resourceMap.HasResources;
     private bool CanHarvestResource => HasAvailableUnit && HasHarvestableResource;
 
+    public float CDValue => _resourceScanner.CDValue;
+
     [Inject]
     private void Construct(InputController inputController)
     {

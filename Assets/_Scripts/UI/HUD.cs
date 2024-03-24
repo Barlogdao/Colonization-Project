@@ -1,11 +1,13 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class HUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _resourceAmount;
     [SerializeField] private Canvas _canvas;
+    [SerializeField] private Image _scanner;
 
     private ICommandCenterNotifier _commandCenter;
     private Selector _selector;
@@ -32,6 +34,14 @@ public class HUD : MonoBehaviour
             Show();
             _commandCenter = commandCenter;
             _commandCenter.ResourceAmountChanged += OnResourceAmountChanged;
+        }
+    }
+
+    private void Update()
+    {
+        if (_commandCenter != null) 
+        {
+            _scanner.fillAmount = Mathf.Clamp01( _commandCenter.CDValue);
         }
     }
 
