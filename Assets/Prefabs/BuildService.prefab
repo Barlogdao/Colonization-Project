@@ -92,7 +92,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _blueprint: {fileID: 3402390165340255786}
-  _rotateSpeed: 0.1
+  _rotateSpeed: 10
   _placementLayer:
     serializedVersion: 2
     m_Bits: 512

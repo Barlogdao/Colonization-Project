@@ -57,8 +57,7 @@ public class BuildService : MonoBehaviour
 
     private void RotationHandle()
     {
-        float angle = _input.ScrollValue * _rotateSpeed;
-        Debug.Log(angle);
+        float angle = _input.MouseScrollY * _rotateSpeed;
 
         _blueprint.Rotate(angle);
     }

@@ -64,11 +64,11 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Scroll"",
+                    ""name"": ""MouseScrollY"",
                     ""type"": ""Value"",
                     ""id"": ""06eafeee-0f14-43b5-9cbd-57e4be8f64a0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
+                    ""expectedControlType"": """",
+                    ""processors"": ""Clamp(min=-1,max=1)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 }
@@ -180,7 +180,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Scroll"",
+                    ""action"": ""MouseScrollY"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -191,7 +191,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Scroll"",
+                    ""action"": ""MouseScrollY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -202,7 +202,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Scroll"",
+                    ""action"": ""MouseScrollY"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -234,7 +234,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Build = m_Game.FindAction("Build", throwIfNotFound: true);
         m_Game_CameraMovement = m_Game.FindAction("CameraMovement", throwIfNotFound: true);
         m_Game_Cancel = m_Game.FindAction("Cancel", throwIfNotFound: true);
-        m_Game_Scroll = m_Game.FindAction("Scroll", throwIfNotFound: true);
+        m_Game_MouseScrollY = m_Game.FindAction("MouseScrollY", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -300,7 +300,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Build;
     private readonly InputAction m_Game_CameraMovement;
     private readonly InputAction m_Game_Cancel;
-    private readonly InputAction m_Game_Scroll;
+    private readonly InputAction m_Game_MouseScrollY;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -309,7 +309,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Build => m_Wrapper.m_Game_Build;
         public InputAction @CameraMovement => m_Wrapper.m_Game_CameraMovement;
         public InputAction @Cancel => m_Wrapper.m_Game_Cancel;
-        public InputAction @Scroll => m_Wrapper.m_Game_Scroll;
+        public InputAction @MouseScrollY => m_Wrapper.m_Game_MouseScrollY;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -331,9 +331,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
-            @Scroll.started += instance.OnScroll;
-            @Scroll.performed += instance.OnScroll;
-            @Scroll.canceled += instance.OnScroll;
+            @MouseScrollY.started += instance.OnMouseScrollY;
+            @MouseScrollY.performed += instance.OnMouseScrollY;
+            @MouseScrollY.canceled += instance.OnMouseScrollY;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -350,9 +350,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
-            @Scroll.started -= instance.OnScroll;
-            @Scroll.performed -= instance.OnScroll;
-            @Scroll.canceled -= instance.OnScroll;
+            @MouseScrollY.started -= instance.OnMouseScrollY;
+            @MouseScrollY.performed -= instance.OnMouseScrollY;
+            @MouseScrollY.canceled -= instance.OnMouseScrollY;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -385,6 +385,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnBuild(InputAction.CallbackContext context);
         void OnCameraMovement(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
-        void OnScroll(InputAction.CallbackContext context);
+        void OnMouseScrollY(InputAction.CallbackContext context);
     }
 }
