@@ -62,6 +62,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""Value"",
+                    ""id"": ""06eafeee-0f14-43b5-9cbd-57e4be8f64a0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -163,6 +172,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""a8634e72-9d77-429e-b099-c0f8f29707cb"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""969ed9af-6fa1-42d7-ab8c-e4735cf739ab"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""d8959098-d996-4ab6-8a2c-cb94cb058422"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -192,6 +234,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Game_Build = m_Game.FindAction("Build", throwIfNotFound: true);
         m_Game_CameraMovement = m_Game.FindAction("CameraMovement", throwIfNotFound: true);
         m_Game_Cancel = m_Game.FindAction("Cancel", throwIfNotFound: true);
+        m_Game_Scroll = m_Game.FindAction("Scroll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -257,6 +300,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Build;
     private readonly InputAction m_Game_CameraMovement;
     private readonly InputAction m_Game_Cancel;
+    private readonly InputAction m_Game_Scroll;
     public struct GameActions
     {
         private @PlayerInput m_Wrapper;
@@ -265,6 +309,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Build => m_Wrapper.m_Game_Build;
         public InputAction @CameraMovement => m_Wrapper.m_Game_CameraMovement;
         public InputAction @Cancel => m_Wrapper.m_Game_Cancel;
+        public InputAction @Scroll => m_Wrapper.m_Game_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -286,6 +331,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
         }
 
         private void UnregisterCallbacks(IGameActions instance)
@@ -302,6 +350,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
         }
 
         public void RemoveCallbacks(IGameActions instance)
@@ -334,5 +385,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnBuild(InputAction.CallbackContext context);
         void OnCameraMovement(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
 }

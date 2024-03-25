@@ -4,5 +4,5 @@ public interface ICommandCenterNotifier
 {
     public event Action<int> ResourceAmountChanged;
 
-    public float CDValue { get; }
+    public float ScannerCooldownProgress { get; }
 }

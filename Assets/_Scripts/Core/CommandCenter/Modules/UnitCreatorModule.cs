@@ -5,16 +5,15 @@ public class UnitCreatorModule : MonoBehaviour
 {
     [SerializeField, Min(1)] private int _unitCost = 3;
 
-    private UnitFactory _unitFactory;
-
+    private UnitSpawner _unitSpawner;
     private CommandCenter _commandCenter;
     private Flag _flag;
     private ResourceStorage _resourceStorage;
 
     [Inject]
-    private void Construct(UnitFactory unitFactory)
+    private void Construct(UnitSpawner unitSpawner)
     {
-        _unitFactory = unitFactory;
+        _unitSpawner = unitSpawner;
     }
 
     public void Initialize(CommandCenter commandCenter, Flag flag, ResourceStorage resourceStorage)
@@ -31,7 +30,7 @@ public class UnitCreatorModule : MonoBehaviour
 
         if (_resourceStorage.TrySpend(_unitCost) == true)
         {
-            Unit unit = _unitFactory.Create(transform.position);
+            Unit unit = _unitSpawner.Spawn(transform.position);
             _commandCenter.BindUnit(unit);
         }
     }

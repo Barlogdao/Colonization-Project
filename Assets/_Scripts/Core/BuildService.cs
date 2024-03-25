@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using Zenject;
 
 public class BuildService : MonoBehaviour
@@ -58,8 +57,8 @@ public class BuildService : MonoBehaviour
 
     private void RotationHandle()
     {
-        float mouseWheelInput = Mouse.current.scroll.y.value;
-        float angle = mouseWheelInput * _rotateSpeed;
+        float angle = _input.ScrollValue * _rotateSpeed;
+        Debug.Log(angle);
 
         _blueprint.Rotate(angle);
     }

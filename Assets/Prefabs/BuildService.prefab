@@ -46,9 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _validMaterial: {fileID: 2100000, guid: 6190a5a3216f0834585cf0b32aecae5e, type: 2}
   _unvalidMaterial: {fileID: 2100000, guid: b000661afbe6bb048b94a56ec836466a, type: 2}
-  _collisionLayer:
-    serializedVersion: 2
-    m_Bits: 1280
 --- !u!1 &6898288063823763603
 GameObject:
   m_ObjectHideFlags: 0

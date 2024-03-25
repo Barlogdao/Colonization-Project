@@ -4934,7 +4934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4894a3e0e47be84419f14c4cca671de1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnHeight: 100
+  _spawnHeight: 357.7
   _spawnDuration: 0.8
   _ease: 11
   _landingSmoke: {fileID: 5472793882998323141}
@@ -5157,6 +5157,7 @@ MonoBehaviour:
   _commandCenterBuilder: {fileID: 8073255607230915971}
   _unitCreatorModule: {fileID: 9200538557447230285}
   _flag: {fileID: 647157379023764456}
+  _collider: {fileID: 8290830260948786212}
 --- !u!114 &8073255607230915971
 MonoBehaviour:
   m_ObjectHideFlags: 0

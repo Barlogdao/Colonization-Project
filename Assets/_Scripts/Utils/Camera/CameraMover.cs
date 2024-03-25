@@ -50,7 +50,7 @@ public class CameraMover : MonoBehaviour
     {
         if (_input.IsRightMouseButtonClicked == true)
         {
-            if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit, 1000f, _layerMask))
+            if (Physics.Raycast(_input.ScreenPointRay, out RaycastHit hit, _camera.farClipPlane, _layerMask))
             {
                 transform.position = hit.point.WithY(transform.position.y);
             }

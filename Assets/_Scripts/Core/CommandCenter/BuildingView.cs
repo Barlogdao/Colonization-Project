@@ -2,24 +2,36 @@ using UnityEngine;
 using DG.Tweening;
 using EPOOutline;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Collider))]
 public class BuildingView : View
 {
-    [SerializeField] private float _spawnHeight;
-    [SerializeField] private float _spawnDuration;
-    [SerializeField] private Ease _ease;
-    [SerializeField] private ParticleSystem _landingSmoke;
-
     private MeshRenderer[] _meshRenderers;
     private Outlinable _outlinable;
+    private Collider _collider;
+    private int _collisionAmount = 0;
 
-    private new void Awake()
+    public bool IsCollide => _collisionAmount > 0;
+
+    private void Awake()
     {
-        base.Awake();
-
+        _collider = GetComponent<Collider>();
         _meshRenderers = GetComponentsInChildren<MeshRenderer>();
         _outlinable = GetComponent<Outlinable>();
 
+        _collider.isTrigger = true;
+
         HideOutline();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        _collisionAmount++;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        _collisionAmount--;
     }
 
     public void ShowOutline()
@@ -37,10 +49,5 @@ public class BuildingView : View
     {
         foreach (MeshRenderer renderer in _meshRenderers)
             renderer.material = material;
-    }
-
-    public void ShowSpawn()
-    {
-        transform.DOMoveY(_spawnHeight, _spawnDuration).From().SetEase(_ease).OnComplete(() => _landingSmoke.Play());
     }
 }

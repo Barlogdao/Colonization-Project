@@ -12,7 +12,7 @@ public class ResourceScanner : MonoBehaviour
     private ResourceMap _resourceMap;
     private float _elapsedTime;
 
-    public float CDValue => _elapsedTime/_scanCooldown;
+    public float CooldownProgress => Mathf.Clamp01(_elapsedTime/_scanCooldown);
 
     public void Initialize(ResourceMap resourceMap)
     {

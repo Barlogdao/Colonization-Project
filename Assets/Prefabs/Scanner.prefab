@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e51667e7d26a3064799828b06746eefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scanRadius: 102.5
-  _scanCooldown: 5
+  _scanRadius: 150
+  _scanCooldown: 4
   _resourceLayer:
     serializedVersion: 2
     m_Bits: 64
-  _visual: {fileID: 3528746305917495819}
+  _view: {fileID: 0}

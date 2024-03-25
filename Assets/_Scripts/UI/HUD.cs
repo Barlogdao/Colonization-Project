@@ -7,7 +7,10 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _resourceAmount;
     [SerializeField] private Canvas _canvas;
-    [SerializeField] private Image _scanner;
+    [SerializeField] private Image _scannerIcon;
+
+    [SerializeField] private Color _activeScanner;
+    [SerializeField] private Color _unactiveScanner;
 
     private ICommandCenterNotifier _commandCenter;
     private Selector _selector;
@@ -32,6 +35,7 @@ public class HUD : MonoBehaviour
         if (selectable is ICommandCenterNotifier commandCenter)
         {
             Show();
+
             _commandCenter = commandCenter;
             _commandCenter.ResourceAmountChanged += OnResourceAmountChanged;
         }
@@ -41,7 +45,9 @@ public class HUD : MonoBehaviour
     {
         if (_commandCenter != null) 
         {
-            _scanner.fillAmount = Mathf.Clamp01( _commandCenter.CDValue);
+            _scannerIcon.fillAmount =_commandCenter.ScannerCooldownProgress;
+
+            _scannerIcon.color = _scannerIcon.fillAmount == 1f ? _activeScanner : _unactiveScanner;
         }
     }
 

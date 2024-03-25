@@ -1,12 +1,28 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using RB.Extensions.Vector;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class Unit : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private Transform _cargo;
+    [SerializeField] private float _reachTargetOffset;
+    [SerializeField] private View _view;
+
+    private NavMeshAgent _agent;
+
+    private void Awake()
+    {
+        _agent = GetComponent<NavMeshAgent>();
+        _agent.speed = _speed;
+    }
+
+    private void Start()
+    {
+        _view.ShowSpawn();
+    }
 
     public void HarvestResource(CommandCenter commandCenter, Resource resource)
     {
@@ -20,31 +36,33 @@ public class Unit : MonoBehaviour
 
     private IEnumerator HarvestRoutine(CommandCenter commandCenter, Resource resource)
     {
-        yield return MoveToTarget(resource.transform);
+        Vector3 targetPosition = resource.transform.position;
+
+        yield return MoveToTarget(targetPosition);
 
         resource.Harvest(transform, _cargo.position);
 
-        yield return MoveToTarget(commandCenter.transform);
+        targetPosition = commandCenter.GetClosestPoint(transform);
+
+        yield return MoveToTarget(targetPosition);
 
         UnloadCargo(commandCenter,resource);
     }
 
     public IEnumerator BuildRoutine(Flag flag, Action<Unit> onReachFlag)
     {
-        yield return MoveToTarget(flag.transform);
+        Vector3 targetPosition = flag.transform.position;
+
+        yield return MoveToTarget(targetPosition);
 
         onReachFlag?.Invoke(this);
     }
 
-    private IEnumerator MoveToTarget(Transform target)
+    private IEnumerator MoveToTarget(Vector3 targetPosition)
     {
-        while (transform.position != target.position.WithY(transform.position.y))
-        {
-            transform.position = Vector3.MoveTowards(transform.position, target.position.WithY(transform.position.y), _speed * Time.deltaTime);
-            transform.LookAt(target.position.WithY(transform.position.y));
-
-            yield return null;
-        }
+        yield return new WaitUntil(() => _agent.SetDestination(targetPosition) == true);
+        yield return new WaitUntil(() => _agent.hasPath == true);
+        yield return new WaitUntil(() => _agent.remainingDistance <= _reachTargetOffset);
     }
 
     private void UnloadCargo(CommandCenter commandCenter, Resource resource)

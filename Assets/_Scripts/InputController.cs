@@ -15,7 +15,7 @@ public class InputController : ITickable, IDisposable
     public bool IsRightMouseButtonClicked => Mouse.current.rightButton.wasPressedThisFrame;
     public Vector2 MousePosition => Mouse.current.position.value;
     public Ray ScreenPointRay => Camera.main.ScreenPointToRay(MousePosition);
-
+    public float ScrollValue { get; private set; }
 
     public InputController()
     {
@@ -44,7 +44,7 @@ public class InputController : ITickable, IDisposable
 
     public void Tick()
     {
-        
+        ScrollValue = _playerInput.Game.Scroll.ReadValue<float>();
     }
 
     public void Dispose()

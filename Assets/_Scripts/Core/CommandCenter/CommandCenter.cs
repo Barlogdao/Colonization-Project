@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
@@ -11,22 +10,21 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     [SerializeField] private CommandCenterBuilderModule _commandCenterBuilder;
     [SerializeField] private UnitCreatorModule _unitCreatorModule;
     [SerializeField] private Flag _flag;
+    [SerializeField] private Collider _collider;
 
     private InputController _inputController;
     private ResourceMap _resourceMap;
     private ResourceStorage _resourceStorage;
-
     private Queue<Unit> _units;
 
     public event Action<int> ResourceAmountChanged;
 
     public Vector3 Position => transform.position;
+    public float ScannerCooldownProgress => _resourceScanner.CooldownProgress;
 
     private bool HasAvailableUnit => _units.Count > 0;
     private bool HasHarvestableResource => _resourceMap.HasResources;
     private bool CanHarvestResource => HasAvailableUnit && HasHarvestableResource;
-
-    public float CDValue => _resourceScanner.CDValue;
 
     [Inject]
     private void Construct(InputController inputController)
@@ -65,6 +63,11 @@ public class CommandCenter : MonoBehaviour, ICommandCenterNotifier, ISelectable
     public void BindUnit(Unit unit)
     {
         _units.Enqueue(unit);
+    }
+
+    public Vector3 GetClosestPoint(Transform transform)
+    {
+        return _collider.ClosestPoint(transform.position);
     }
 
     public void AcceptResource(Resource resource)

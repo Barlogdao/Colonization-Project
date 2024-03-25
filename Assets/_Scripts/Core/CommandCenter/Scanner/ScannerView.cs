@@ -30,6 +30,7 @@ public class ScannerView : MonoBehaviour
     {
         _renderer.enabled = true;
     }
+
     private void Hide()
     {
         _renderer.enabled = false;

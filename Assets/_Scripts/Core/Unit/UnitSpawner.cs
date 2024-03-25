@@ -1,11 +1,11 @@
 using UnityEngine;
 
 [System.Serializable]
-public class UnitFactory
+public class UnitSpawner
 {
     [SerializeField] private Unit _prefab;
 
-    public Unit Create(Vector3 position)
+    public Unit Spawn(Vector3 position)
     {
         Unit unit = Object.Instantiate(_prefab, position, Quaternion.identity);
 
