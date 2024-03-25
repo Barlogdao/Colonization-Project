@@ -708,7 +708,7 @@ MonoBehaviour:
   _resourceAmount: {fileID: 239957543}
   _canvas: {fileID: 316832971}
   _scannerIcon: {fileID: 1535799049}
-  _activeScanner: {r: 0.4660377, g: 1, b: 0.9557298, a: 1}
+  _activeScanner: {r: 0.82452834, g: 1, b: 0.9858074, a: 1}
   _unactiveScanner: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0.69411767}
 --- !u!114 &316832969
 MonoBehaviour:
@@ -1860,6 +1860,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1186332807 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
+    type: 3}
+  m_PrefabInstance: {fileID: 628907817891248240}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1189069006
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3222,7 +3228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.1641509, g: 1, b: 0.66156626, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3263,7 +3269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 32, y: 37}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 0}
 --- !u!1001 &1555209011
@@ -3491,6 +3497,7 @@ Transform:
   - {fileID: 1423521645}
   - {fileID: 1258326960}
   - {fileID: 1938329235}
+  - {fileID: 1186332807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1938329234
@@ -4258,22 +4265,22 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 1716571359}
     m_Modifications:
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -65.89421
+      value: -172.31134
       objectReference: {fileID: 0}
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 215.37262
       objectReference: {fileID: 0}
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 134.94241
+      value: 14.745483
       objectReference: {fileID: 0}
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
@@ -4283,7 +4290,7 @@ PrefabInstance:
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3371806893766025488, guid: 9e2a577d1fc0e9e449563bc1ca514acc,
         type: 3}
@@ -4486,11 +4493,10 @@ SceneRoots:
   - {fileID: 1319872571}
   - {fileID: 973815985}
   - {fileID: 1332242972}
-  - {fileID: 1585400348}
   - {fileID: 337054567}
   - {fileID: 1716571359}
   - {fileID: 934827114}
   - {fileID: 316832972}
+  - {fileID: 1585400348}
   - {fileID: 325149656}
   - {fileID: 361694195}
-  - {fileID: 628907817891248240}
